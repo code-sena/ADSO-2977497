@@ -1,0 +1,42 @@
+-- Construir base de datos de carrito compras
+
+persona
+	id
+	primer_nombre
+	segundo_nombre
+	primer_apellido
+	segundo_apellido
+	correo
+	direccion
+	
+rol
+	id
+	nombre
+	descripcion
+	
+usuario
+	id
+	usuario
+	contrasenia
+	persona_id (UNIQUE)
+	rol_id (UNIQUE)
+
+producto
+	id
+	nombre
+	descripcion
+	stock
+	valor_unitario
+	
+facura
+	id
+	fecha
+	valor_total
+	usuario_id
+	
+factura_detalle
+	id
+	cantidad
+	producto_id
+	factura_id
+	
