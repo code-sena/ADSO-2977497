@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .tab-content iframe { width: 100%; height: 900px; border: none; }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="mb-4">Bienvenido, admin</h1>
+    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes" type="button" role="tab">Clientes</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab">Categorías</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tareas-tab" data-bs-toggle="tab" data-bs-target="#tareas" type="button" role="tab">Tareas</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="mis-tareas-tab" data-bs-toggle="tab" data-bs-target="#mis-tareas" type="button" role="tab">Mis Tareas</button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3">
+      <div class="tab-pane fade show active" id="clientes" role="tabpanel">
+        <iframe src="cliente.html"></iframe>
+      </div>
+      <div class="tab-pane fade" id="categorias" role="tabpanel">
+        <iframe src="categoria.html"></iframe>
+      </div>
+      <div class="tab-pane fade" id="tareas" role="tabpanel">
+        <iframe src="tarea.html"></iframe>
+      </div>
+      <div class="tab-pane fade" id="mis-tareas" role="tabpanel">
+        <iframe src="mis-tareas.html"></iframe>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

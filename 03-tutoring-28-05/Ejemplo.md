@@ -6,8 +6,8 @@ Creaer un aplicación para llevar el control de las tareas que una persona debe 
 
 ==================
 Establecer los requerimientos funcionales de la aplicación.
-
-
+*
+*
 1. RF: Realizar la gestión de los datos básicos de un cliente (persona).
 
 - Capturar el tipo documento, nombre, apellidos, edad, correo electrónico
