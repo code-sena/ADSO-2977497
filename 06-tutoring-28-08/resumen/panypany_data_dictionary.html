@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PANYPAN — Diccionario de Datos (Core Schema MySQL 8.0+)</title>
+  <link rel="stylesheet" href="panypany_styles.css">
+  <!-- Build: full manual restored -->
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1>PANYPAN — Diccionario de Datos</h1>
+    <p class="subtitle">Manual funcional y técnico para personas sin experiencia en bases de datos • Esquema Core (MySQL 8.0+)</p>
+    <p class="meta">Convenciones: nombres en singular · PK = <code>id</code> · FKs con sufijo <code>_id</code> · <code>`user`</code> usa backticks por palabra reservada · timestamps con <code>CURRENT_TIMESTAMP</code></p>
+  </div>
+</header>
+
+<nav class="toc container" aria-label="Tabla de contenido">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#introduccion">Introducción</a></li>
+    <li><a href="#alcance">Alcance</a></li>
+    <li><a href="#como-leer">Cómo leer este manual</a></li>
+    <li><a href="#convenciones">Convenciones y buenas prácticas</a></li>
+    <li><a href="#filtro-tags">Filtrar por Tag</a></li>
+    <li><a href="#modelo-conceptual">Modelo conceptual y relaciones</a></li>
+    <li><a href="#diccionario">Diccionario de datos por entidad</a></li>
+    <li><a href="#glosario">Glosario</a></li>
+    <li><a href="#faq">Preguntas frecuentes (FAQ)</a></li>
+  </ol>
+</nav>
+
+<main class="container">
+  <section id="introduccion" class="card">
+    <h2>Introducción</h2>
+    <p>
+      Este documento describe el <strong>diccionario de datos</strong> del esquema núcleo de PANYPAN.
+      Está pensado para lectores no técnicos y explica <em>qué información se guarda</em>, <em>por qué</em> y <em>cómo se conecta</em>.
+      Un diccionario de datos es como un “manual del sistema nervioso” de la base de datos: define cada tabla (entidad),
+      las columnas (atributos), los tipos de datos, restricciones y las relaciones entre tablas.
+    </p>
+  </section>
+
+  <section id="alcance" class="card">
+    <h2>Alcance</h2>
+    <ul>
+      <li>Cubre el <strong>esquema core</strong> del sistema: ubicación, parámetros, cadena de suministro y negocio.</li>
+      <li>No incluye procesos ETL, reportes externos ni módulos satélite.</li>
+      <li>Base de datos objetivo: <strong>MySQL 8.0+</strong>.</li>
+    </ul>
+  </section>
+
+  <section id="como-leer" class="card">
+    <h2>Cómo leer este manual</h2>
+    <ol>
+      <li>Cada <strong>entidad</strong> corresponde a una tabla (p. ej. <code>company</code>).</li>
+      <li>En la sección <em>Columnas</em> verás nombre, tipo de dato, si permite nulos, valor por defecto y descripción.</li>
+      <li>En <em>Restricciones</em> se listan PK/UK, <span class="badge fk">FK</span> y reglas de borrado/actualización.</li>
+      <li>En <em>Relaciones</em> se explica con palabras simples el “uno a muchos”, “muchos a uno” o jerarquías.</li>
+      <li>Usa el <strong>filtro por Tag</strong> (debajo) para ver solo las entidades de un área (Ubicación, Parámetro, Supply chain, Core negocio).</li>
+    </ol>
+  </section>
+
+  <section id="filtro-tags" class="card" aria-label="Filtrar por Tag">
+    <h2>Filtrar por Tag</h2>
+    <div class="filter-toolbar" role="toolbar" aria-label="Filtro por Tag">
+      <button type="button" class="filter-btn is-active" data-tag="all" aria-pressed="true">Todos <span class="count" aria-hidden="true"></span></button>
+      <button type="button" class="filter-btn" data-tag="Ubicación" aria-pressed="false">Ubicación <span class="count" aria-hidden="true"></span></button>
+      <button type="button" class="filter-btn" data-tag="Parámetro" aria-pressed="false">Parámetro <span class="count" aria-hidden="true"></span></button>
+      <button type="button" class="filter-btn" data-tag="Supply chain" aria-pressed="false">Supply chain <span class="count" aria-hidden="true"></span></button>
+      <button type="button" class="filter-btn" data-tag="Core negocio" aria-pressed="false">Core negocio <span class="count" aria-hidden="true"></span></button>
+    </div>
+    <p class="hint">Haz clic sobre uno o varios tags para activar el filtro. <em>“Todos”</em> limpia la selección.</p>
+  </section>
+
+  <section id="convenciones" class="card">
+    <h2>Convenciones y buenas prácticas</h2>
+    <ul>
+      <li>Nombres en <strong>singular</strong>: <code>product</code>, <code>category</code>.</li>
+      <li>Claves foráneas con sufijo <code>_id</code>: p. ej. <code>product.category_id</code>.</li>
+      <li><code>id</code> como <strong>PK</strong> entero autoincremental (<code>BIGINT UNSIGNED</code>).</li>
+      <li>Columnas <code>created_at</code> y <code>updated_at</code> con <code>CURRENT_TIMESTAMP</code>.</li>
+      <li>Restricciones explícitas (<span class="badge unique">UNIQUE</span>, <span class="badge fk">FK</span>) garantizan calidad de datos.</li>
+      <li>Reglas de borrado: <span class="badge rule">RESTRICT</span> (evitar borrar si hay uso), <span class="badge rule">SET NULL</span> (desasociar), <span class="badge rule">CASCADE</span> al actualizar IDs.</li>
+    </ul>
+  </section>
+
+  <section id="modelo-conceptual" class="card">
+    <h2>Modelo conceptual y relaciones (visión general)</h2>
+    <div class="relations-grid">
+      <div class="rel"><span class="entity">company</span> <span class="arrow">1⟶N</span> <span class="entity">headquarter</span></div>
+      <div class="rel"><span class="entity">company</span> <span class="arrow">1⟶N</span> <span class="entity">billing</span></div>
+      <div class="rel"><span class="entity">headquarter</span> <span class="arrow">1⟶N</span> <span class="entity">inventory</span></div>
+      <div class="rel"><span class="entity">headquarter</span> <span class="arrow">1⟶N</span> <span class="entity">billing</span></div>
+      <div class="rel"><span class="entity">person</span> <span class="arrow">1⟶N</span> <span class="entity">billing</span> <span class="note">(cliente)</span></div>
+      <div class="rel"><span class="entity">role</span> <span class="arrow">1⟶N</span> <span class="entity">user</span></div>
+      <div class="rel"><span class="entity">person</span> <span class="arrow">1⟶N*</span> <span class="entity">user</span> <span class="note">(*no forzado por UK; recomendable 1:1)</span></div>
+      <div class="rel"><span class="entity">user</span> <span class="arrow">1⟶N</span> <span class="entity">billing</span> <span class="note">(cajero/vendedor)</span></div>
+      <div class="rel"><span class="entity">payment_method</span> <span class="arrow">1⟶N</span> <span class="entity">billing</span></div>
+      <div class="rel"><span class="entity">supplier</span> <span class="arrow">1⟶N</span> <span class="entity">product</span></div>
+      <div class="rel"><span class="entity">category</span> <span class="arrow">1⟶N</span> <span class="entity">product</span></div>
+      <div class="rel"><span class="entity">category</span> <span class="arrow">1⟶N</span> <span class="entity">category</span> <span class="note">(jerarquía padre→hijo)</span></div>
+      <div class="rel"><span class="entity">product</span> <span class="arrow">1⟶N</span> <span class="entity">inventory</span></div>
+      <div class="rel"><span class="entity">product</span> <span class="arrow">1⟶N</span> <span class="entity">billing_detail</span></div>
+      <div class="rel"><span class="entity">billing</span> <span class="arrow">1⟶N</span> <span class="entity">billing_detail</span></div>
+    </div>
+    <p class="hint">Nota: en <code>inventory</code> la combinación <code>(product_id, headquarter_id)</code> es única: “un stock por producto y sede”.</p>
+  </section>
+
+  <section id="diccionario" class="card">
+    <h2>Diccionario de datos por entidad</h2>
+
+    <!-- ============== company ============== -->
+    <article class="entity-block" id="company" data-tag="Ubicación">
+      <h3>company <span class="tag">Ubicación</span></h3>
+      <p class="purpose">Representa la empresa legal. Se usa para identidad fiscal, emisión de facturas y agrupación de sedes.</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>Clave primaria.</td></tr>
+            <tr><td>legal_name</td><td>VARCHAR(150)</td><td>No</td><td>—</td><td>Razón social.</td></tr>
+            <tr><td>trade_name</td><td>VARCHAR(150)</td><td>Sí</td><td>—</td><td>Nombre comercial.</td></tr>
+            <tr><td>tax_id</td><td>VARCHAR(32)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span> Identificación fiscal.</td></tr>
+            <tr><td>email</td><td>VARCHAR(120)</td><td>Sí</td><td>—</td><td>Contacto.</td></tr>
+            <tr><td>phone</td><td>VARCHAR(40)</td><td>Sí</td><td>—</td><td>Contacto.</td></tr>
+            <tr><td>address</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Dirección.</td></tr>
+            <tr><td>city</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>Ciudad.</td></tr>
+            <tr><td>state</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>Departamento/Estado.</td></tr>
+            <tr><td>country</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>País.</td></tr>
+            <tr><td>postal_code</td><td>VARCHAR(20)</td><td>Sí</td><td>—</td><td>Código postal.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activo/inactivo.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Última actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>tax_id</code>.</li>
+          <li><strong>Relaciones</strong>: 1⟶N con <code>headquarter</code>, 1⟶N con <code>billing</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== headquarter ============== -->
+    <article class="entity-block" id="headquarter" data-tag="Ubicación">
+      <h3>headquarter <span class="tag">Ubicación</span></h3>
+      <p class="purpose">Sede física de la empresa (tienda/sucursal). Controla inventario y facturación local.</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td class="fk">company_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>company.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td>code</td><td>VARCHAR(20)</td><td>No</td><td>—</td><td>Código interno por compañía.</td></tr>
+            <tr><td>name</td><td>VARCHAR(120)</td><td>No</td><td>—</td><td>Nombre sede.</td></tr>
+            <tr><td>email</td><td>VARCHAR(120)</td><td>Sí</td><td>—</td><td>Contacto.</td></tr>
+            <tr><td>phone</td><td>VARCHAR(40)</td><td>Sí</td><td>—</td><td>Contacto.</td></tr>
+            <tr><td>address</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Dirección física.</td></tr>
+            <tr><td>city</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>Ciudad.</td></tr>
+            <tr><td>state</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>Departamento/Estado.</td></tr>
+            <tr><td>country</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>País.</td></tr>
+            <tr><td>postal_code</td><td>VARCHAR(20)</td><td>Sí</td><td>—</td><td>Código postal.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activa.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> (<code>company_id</code>, <code>code</code>) y (<code>company_id</code>, <code>name</code>).</li>
+          <li>FK <code>company_id</code> con <span class="badge rule">ON DELETE RESTRICT</span>, <span class="badge rule">ON UPDATE CASCADE</span>.</li>
+          <li>Relaciones: 1⟶N con <code>inventory</code>, 1⟶N con <code>billing</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== person ============== -->
+    <article class="entity-block" id="person" data-tag="Parámetro">
+      <h3>person <span class="tag">Parámetro</span></h3>
+      <p class="purpose">Personas naturales (clientes y/o usuarios del sistema).</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td>document_type</td><td>VARCHAR(20)</td><td>No</td><td>—</td><td>CC, CE, NIT.</td></tr>
+            <tr><td>document_number</td><td>VARCHAR(40)</td><td>No</td><td>—</td><td>Número documento.</td></tr>
+            <tr><td>first_name</td><td>VARCHAR(100)</td><td>No</td><td>—</td><td>Nombres.</td></tr>
+            <tr><td>last_name</td><td>VARCHAR(100)</td><td>No</td><td>—</td><td>Apellidos.</td></tr>
+            <tr><td>email</td><td>VARCHAR(120)</td><td>Sí</td><td>—</td><td>Correo.</td></tr>
+            <tr><td>phone</td><td>VARCHAR(40)</td><td>Sí</td><td>—</td><td>Teléfono.</td></tr>
+            <tr><td>address</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Dirección.</td></tr>
+            <tr><td>city</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>Ciudad.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activa.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> (<code>document_type</code>, <code>document_number</code>).</li>
+          <li>Relaciones: 1⟶N con <code>billing</code> (cliente). Potencial 1⟶N con <code>user</code> (no forzado por <span class="badge unique">UNIQUE</span>).</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== role ============== -->
+    <article class="entity-block" id="role" data-tag="Parámetro">
+      <h3>role <span class="tag">Parámetro</span></h3>
+      <p class="purpose">Roles de usuario (p. ej. admin, cajero).</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td>name</td><td>VARCHAR(60)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span>.</td></tr>
+            <tr><td>description</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Descripción opcional.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activo.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>name</code>.</li>
+          <li>Relaciones: 1⟶N con <code>user</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== user ============== -->
+    <article class="entity-block" id="user" data-tag="Parámetro">
+      <h3><code>`user`</code> <span class="tag">Parámetro</span></h3>
+      <p class="purpose">Usuarios del sistema. Nota: se usa <code>`user`</code> con <em>backticks</em> por ser palabra reservada.</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td class="fk">person_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>person.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">role_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>role.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td>username</td><td>VARCHAR(60)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span>.</td></tr>
+            <tr><td>password_hash</td><td>VARCHAR(255)</td><td>No</td><td>—</td><td>Hash seguro.</td></tr>
+            <tr><td>email</td><td>VARCHAR(120)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span>.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activo.</td></tr>
+            <tr><td>last_login_at</td><td>DATETIME</td><td>Sí</td><td>—</td><td>Último acceso.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>username</code>, <code>email</code>.</li>
+          <li>FKs con <code>person</code> y <code>role</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</li>
+          <li>Relaciones: 1⟶N con <code>billing</code> (vendedor/cajero).</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== supplier ============== -->
+    <article class="entity-block" id="supplier" data-tag="Supply chain">
+      <h3>supplier <span class="tag">Supply chain</span></h3>
+      <p class="purpose">Proveedores de productos.</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td>company_name</td><td>VARCHAR(150)</td><td>No</td><td>—</td><td>Razón social del proveedor.</td></tr>
+            <tr><td>tax_id</td><td>VARCHAR(32)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span>.</td></tr>
+            <tr><td>contact_name</td><td>VARCHAR(120)</td><td>Sí</td><td>—</td><td>Contacto.</td></tr>
+            <tr><td>email</td><td>VARCHAR(120)</td><td>Sí</td><td>—</td><td>Correo.</td></tr>
+            <tr><td>phone</td><td>VARCHAR(40)</td><td>Sí</td><td>—</td><td>Teléfono.</td></tr>
+            <tr><td>address</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Dirección.</td></tr>
+            <tr><td>city</td><td>VARCHAR(100)</td><td>Sí</td><td>—</td><td>Ciudad.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activo.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>tax_id</code>.</li>
+          <li>Relaciones: 1⟶N con <code>product</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== category ============== -->
+    <article class="entity-block" id="category" data-tag="Core negocio">
+      <h3>category <span class="tag">Core negocio</span></h3>
+      <p class="purpose">Clasifica productos en una jerarquía (categoría padre → hijas).</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td class="fk">parent_category_id</td><td>BIGINT UNSIGNED</td><td>Sí</td><td>NULL</td><td>FK → <code>category.id</code> (<span class="badge rule">SET NULL</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td>code</td><td>VARCHAR(30)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span> código.</td></tr>
+            <tr><td>name</td><td>VARCHAR(120)</td><td>No</td><td>—</td><td>Nombre.</td></tr>
+            <tr><td>description</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Descripción.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activa.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>code</code>.</li>
+          <li>Autorelación: 1⟶N (padre→hijas).</li>
+          <li>Relación: 1⟶N con <code>product</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== product ============== -->
+    <article class="entity-block" id="product" data-tag="Core negocio">
+      <h3>product <span class="tag">Core negocio</span></h3>
+      <p class="purpose">Catálogo de productos con precios, impuestos y proveedor.</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td class="fk">category_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>category.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">supplier_id</td><td>BIGINT UNSIGNED</td><td>Sí</td><td>NULL</td><td>FK → <code>supplier.id</code> (<span class="badge rule">SET NULL</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td>sku</td><td>VARCHAR(40)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span>.</td></tr>
+            <tr><td>barcode</td><td>VARCHAR(64)</td><td>Sí</td><td>—</td><td><span class="badge unique">UNIQUE</span> (permite NULL).</td></tr>
+            <tr><td>name</td><td>VARCHAR(150)</td><td>No</td><td>—</td><td>Nombre.</td></tr>
+            <tr><td>description</td><td>VARCHAR(300)</td><td>Sí</td><td>—</td><td>Descripción.</td></tr>
+            <tr><td>cost_price</td><td>DECIMAL(12,2)</td><td>No</td><td>0.00</td><td>Costo.</td></tr>
+            <tr><td>unit_price</td><td>DECIMAL(12,2)</td><td>No</td><td>0.00</td><td>Precio venta.</td></tr>
+            <tr><td>tax_rate</td><td>DECIMAL(5,2)</td><td>No</td><td>0.00</td><td>% IVA/Impuesto.</td></tr>
+            <tr><td>image_url</td><td>VARCHAR(300)</td><td>Sí</td><td>—</td><td>Imagen.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activo.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>sku</code>, <code>barcode</code>.</li>
+          <li>Relaciones: 1⟶N con <code>inventory</code> y <code>billing_detail</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== inventory ============== -->
+    <article class="entity-block" id="inventory" data-tag="Core negocio">
+      <h3>inventory <span class="tag">Core negocio</span></h3>
+      <p class="purpose">Existencias por producto y sede; define mínimos, máximos y punto de reorden.</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+        <tbody>
+          <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+          <tr><td class="fk">product_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>product.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+          <tr><td class="fk">headquarter_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>headquarter.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+          <tr><td>quantity</td><td>DECIMAL(14,3)</td><td>No</td><td>0.000</td><td>Cantidad disponible.</td></tr>
+          <tr><td>reorder_point</td><td>DECIMAL(14,3)</td><td>No</td><td>0.000</td><td>Nivel para reabastecer.</td></tr>
+          <tr><td>min_stock</td><td>DECIMAL(14,3)</td><td>No</td><td>0.000</td><td>Stock mínimo.</td></tr>
+          <tr><td>max_stock</td><td>DECIMAL(14,3)</td><td>Sí</td><td>NULL</td><td>Stock máximo (opcional).</td></tr>
+          <tr><td>last_movement_at</td><td>DATETIME</td><td>Sí</td><td>—</td><td>Último movimiento.</td></tr>
+          <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+          <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+        </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> (<code>product_id</code>, <code>headquarter_id</code>).</li>
+          <li>Relaciones: muchos-a-uno con <code>product</code> y <code>headquarter</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== payment_method ============== -->
+    <article class="entity-block" id="payment_method" data-tag="Core negocio">
+      <h3>payment_method <span class="tag">Core negocio</span></h3>
+      <p class="purpose">Medios de pago (efectivo, tarjeta, transferencia, mixto).</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td>name</td><td>VARCHAR(60)</td><td>No</td><td>—</td><td><span class="badge unique">UNIQUE</span>.</td></tr>
+            <tr><td>description</td><td>VARCHAR(200)</td><td>Sí</td><td>—</td><td>Descripción.</td></tr>
+            <tr><td>is_active</td><td>TINYINT(1)</td><td>No</td><td>1</td><td>Activo.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> <code>name</code>.</li>
+          <li>Relaciones: 1⟶N con <code>billing</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== billing ============== -->
+    <article class="entity-block" id="billing" data-tag="Core negocio">
+      <h3>billing <span class="tag">Core negocio</span></h3>
+      <p class="purpose">Factura de venta: cabecera (cliente, sede, totales, estado).</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td class="fk">company_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>company.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">headquarter_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>headquarter.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">person_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>person.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">user_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>`user`.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">payment_method_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>payment_method.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td>number</td><td>VARCHAR(40)</td><td>No</td><td>—</td><td>Consecutivo por sede (<span class="badge unique">UNIQUE</span> con <code>headquarter_id</code>).</td></tr>
+            <tr><td>issue_date</td><td>DATETIME</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Fecha de emisión.</td></tr>
+            <tr><td>due_date</td><td>DATETIME</td><td>Sí</td><td>—</td><td>Vencimiento (si aplica).</td></tr>
+            <tr><td>subtotal</td><td>DECIMAL(14,2)</td><td>No</td><td>0.00</td><td>Suma líneas antes de descuento.</td></tr>
+            <tr><td>discount_total</td><td>DECIMAL(14,2)</td><td>No</td><td>0.00</td><td>Total descuentos.</td></tr>
+            <tr><td>tax_total</td><td>DECIMAL(14,2)</td><td>No</td><td>0.00</td><td>Total impuestos.</td></tr>
+            <tr><td>total</td><td>DECIMAL(14,2)</td><td>No</td><td>0.00</td><td>Total final.</td></tr>
+            <tr><td>status</td><td>ENUM('DRAFT','ISSUED','PAID','CANCELLED')</td><td>No</td><td>'DRAFT'</td><td>Estado de la factura.</td></tr>
+            <tr><td>note</td><td>VARCHAR(300)</td><td>Sí</td><td>—</td><td>Observaciones.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li><span class="badge unique">UNIQUE</span> (<code>headquarter_id</code>, <code>number</code>) asegura consecutivos por sede.</li>
+          <li>Relaciones: 1⟶N con <code>billing_detail</code>.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- ============== billing_detail ============== -->
+    <article class="entity-block" id="billing_detail" data-tag="Core negocio">
+      <h3>billing_detail <span class="tag">Core negocio</span></h3>
+      <p class="purpose">Detalle de productos facturados (cantidad, precio, impuestos, descuentos).</p>
+      <details open>
+        <summary>Columnas</summary>
+        <table class="cols">
+          <thead><tr><th>Columna</th><th>Tipo</th><th>Null</th><th>Default</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td>BIGINT UNSIGNED (AI)</td><td>No</td><td>—</td><td>PK.</td></tr>
+            <tr><td class="fk">billing_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>billing.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td class="fk">product_id</td><td>BIGINT UNSIGNED</td><td>No</td><td>—</td><td>FK → <code>product.id</code> (<span class="badge rule">RESTRICT</span>/<span class="badge rule">CASCADE</span>).</td></tr>
+            <tr><td>quantity</td><td>DECIMAL(14,3)</td><td>No</td><td>—</td><td>Cantidad vendida.</td></tr>
+            <tr><td>unit_price</td><td>DECIMAL(12,2)</td><td>No</td><td>—</td><td>Precio unitario.</td></tr>
+            <tr><td>discount_percent</td><td>DECIMAL(5,2)</td><td>No</td><td>0.00</td><td>% de descuento.</td></tr>
+            <tr><td>tax_rate</td><td>DECIMAL(5,2)</td><td>No</td><td>0.00</td><td>% impuesto.</td></tr>
+            <tr><td>line_subtotal</td><td>DECIMAL(14,2)</td><td>No</td><td>0.00</td><td>Antes de descuento/impuesto.</td></tr>
+            <tr><td>line_total</td><td>DECIMAL(14,2)</td><td>No</td><td>0.00</td><td>Total de la línea.</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>No</td><td>CURRENT_TIMESTAMP</td><td>Creación.</td></tr>
+            <tr><td>updated_at</td><td>TIMESTAMP</td><td>No</td><td>ON UPDATE CURRENT_TIMESTAMP</td><td>Actualización.</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <details>
+        <summary>Restricciones y relaciones</summary>
+        <ul class="rules">
+          <li>Relación N⟶1 con <code>billing</code> (cabecera) y N⟶1 con <code>product</code>.</li>
+        </ul>
+      </details>
+    </article>
+  </section>
+
+  <section id="glosario" class="card">
+    <h2>Glosario</h2>
+    <dl class="glossary">
+      <dt>Entidad (tabla)</dt>
+      <dd>Conjunto de datos del mismo tipo (p. ej., <code>product</code>).</dd>
+      <dt>Atributo (columna)</dt>
+      <dd>Característica almacenada dentro de una tabla.</dd>
+      <dt>PK (Primary Key)</dt>
+      <dd>Identificador único de cada fila.</dd>
+      <dt>FK (Foreign Key)</dt>
+      <dd>Columna que conecta dos tablas y garantiza integridad referencial.</dd>
+      <dt>UNIQUE</dt>
+      <dd>Restricción que impide valores repetidos en una o varias columnas.</dd>
+      <dt>RESTRICT / SET NULL / CASCADE</dt>
+      <dd>Comportamiento al borrar/actualizar datos referenciados.</dd>
+      <dt>Timestamp</dt>
+      <dd>Marca de tiempo de creación/actualización.</dd>
+    </dl>
+  </section>
+
+  <section id="faq" class="card">
+    <h2>Preguntas frecuentes (FAQ)</h2>
+    <details>
+      <summary>¿Por qué <code>`user`</code> lleva backticks?</summary>
+      <p>Porque <em>user</em> es palabra reservada en MySQL. Los backticks indican que es un identificador de tabla válido.</p>
+    </details>
+    <details>
+      <summary>¿Puedo borrar una categoría padre con hijas?</summary>
+      <p>El FK usa <strong>ON DELETE SET NULL</strong>: al borrar el padre, las hijas quedan sin padre (<code>parent_category_id = NULL</code>).</p>
+    </details>
+    <details>
+      <summary>¿Por qué el consecutivo de factura es único por sede?</summary>
+      <p>La restricción <strong>UNIQUE (headquarter_id, number)</strong> evita choques entre sedes y permite series independientes.</p>
+    </details>
+    <details>
+      <summary>¿Se permite que una persona tenga varios usuarios?</summary>
+      <p>El esquema no lo impide (no hay UNIQUE en <code>user.person_id</code>), pero a nivel de negocio suele preferirse 1:1.</p>
+    </details>
+  </section>
+
+  <footer class="site-footer container">
+    <p>© PANYPAN · Diccionario de Datos — generado para documentación funcional/técnica. MySQL 8.0+.</p>
+  </footer>
+</main>
+
+<script src="panypany_app.js" defer></script>
+</body>
+</html>
