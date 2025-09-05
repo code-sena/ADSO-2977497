@@ -1,0 +1,35 @@
+@startuml panypany-usecase-highlevel
+' PANYPAN - High Level Use Case Diagram
+
+title PANYPAN - High Level Use Cases
+
+
+' Mejor visualización vertical: actores a la izquierda, casos de uso en columna
+left to right direction
+
+actor Cliente as C
+actor Empleado as E
+actor Administrador as A
+
+rectangle "Sistema PANYPAN" {
+  usecase UC1 as "Gestionar ventas"
+  usecase UC2 as "Gestionar inventario"
+  usecase UC3 as "Gestionar productos"
+  usecase UC4 as "Gestionar pagos"
+  usecase UC5 as "Gestionar usuarios y roles"
+  usecase UC6 as "Gestionar proveedores"
+  usecase UC7 as "Gestionar sedes y empresas"
+}
+
+C -- UC1
+C -- UC4
+E -- UC1
+E -- UC2
+E -- UC3
+E -- UC4
+E -- UC6
+E -- UC7
+A -- UC5
+A -- UC7
+
+@enduml

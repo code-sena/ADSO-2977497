@@ -1,0 +1,38 @@
+
+@startuml deployment-aws-full
+' PANYPAN – Deployment Diagram (AWS, containers, CI/CD, jerarquía completa)
+
+title PANYPAN – Deployment Diagram (AWS, Containers, CI/CD, Full)
+
+artifact "GitHub Repo" as github
+node "Jenkins" as jenkins
+
+node "AWS Cloud" as aws {
+	node "ECS Cluster" as ecs {
+		node "Backend (Spring Boot)" as backend
+		node "App Web" as webapp
+		node "App Móvil" as mobileapp
+		database "DB (MySQL/PostgreSQL)" as db
+	}
+}
+
+' --- CI/CD Connections ---
+github --> jenkins : Código fuente
+jenkins --> backend : Build & Deploy
+jenkins --> webapp : Build & Deploy
+jenkins --> mobileapp : Build & Deploy
+jenkins --> db : DB migrations
+
+' --- App Communications ---
+webapp --> backend : API REST
+mobileapp --> backend : API REST
+backend --> db : JDBC/ORM
+
+note right of github : Repositorio de código
+note right of jenkins : CI/CD: Build, test, deploy
+note right of backend : Java Spring Boot
+note right of webapp : React/Vue/Angular
+note right of mobileapp : Flutter/React Native/Android
+note right of db : MySQL o PostgreSQL
+
+@enduml

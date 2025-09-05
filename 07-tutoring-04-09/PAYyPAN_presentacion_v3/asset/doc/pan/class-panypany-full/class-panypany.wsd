@@ -1,0 +1,78 @@
+@startuml class-panypany
+' PANYPAN – Class Diagram (IDs and FKs only, style as example)
+
+title PANYPAN – Class Diagram (IDs only)
+
+' --- PARAMETER ---
+class person {
+  + id
+}
+class user {
+  + id
+  + person_id
+  + role_id
+}
+class role {
+  + id
+}
+
+' --- BUSINESS CORE ---
+class category {
+  + id
+}
+class product {
+  + id
+  + category_id
+  + supplier_id
+}
+class inventory {
+  + id
+  + product_id
+}
+class billing {
+  + id
+  + user_id
+  + company_id
+  + headquarters_id
+  + method_payment_id
+}
+class billing_detail {
+  + id
+  + billing_id
+  + product_id
+}
+
+' --- PAYMENT ---
+class method_payment {
+  + id
+}
+
+' --- SUPPLY CHAIN ---
+class supplier {
+  + id
+}
+
+' --- UBICATION ---
+class company {
+  + id
+}
+class headquarters {
+  + id
+  + company_id
+}
+
+' --- RELATIONSHIPS ---
+category "1" *-- "many" product
+supplier "1" *-- "many" product
+product "1" *-- "many" inventory
+billing "1" *-- "many" billing_detail
+billing_detail "many" --> "1" product
+billing "many" --> "1" user
+user "many" --> "1" person
+user "many" --> "1" role
+billing "many" --> "1" company
+billing "many" --> "1" headquarters
+billing "many" --> "1" method_payment
+company "1" *-- "many" headquarters
+
+@enduml

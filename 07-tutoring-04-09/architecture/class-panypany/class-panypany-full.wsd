@@ -1,0 +1,112 @@
+@startuml class-panypany-full
+' PANYPAN – Class Diagram (with attributes)
+
+title PANYPAN – Class Diagram (with attributes)
+
+' --- PARAMETER ---
+class person {
+  + id: int
+  + name: string
+  + lastName: string
+  + document: string
+  + email: string
+  + phone: string
+}
+class user {
+  + id: int
+  + username: string
+  + password: string
+  + status: bool
+  + person_id: int
+  + role_id: int
+}
+class role {
+  + id: int
+  + name: string
+  + description: string
+}
+
+' --- BUSINESS CORE ---
+class category {
+  + id: int
+  + name: string
+  + description: string
+}
+class product {
+  + id: int
+  + name: string
+  + description: string
+  + price: decimal
+  + stock: int
+  + category_id: int
+  + supplier_id: int
+}
+class inventory {
+  + id: int
+  + product_id: int
+  + quantity: int
+  + minStock: int
+  + maxStock: int
+}
+class billing {
+  + id: int
+  + user_id: int
+  + company_id: int
+  + headquarters_id: int
+  + method_payment_id: int
+  + date: date
+  + total: decimal
+}
+class billing_detail {
+  + id: int
+  + billing_id: int
+  + product_id: int
+  + quantity: int
+  + price: decimal
+}
+
+' --- PAYMENT ---
+class method_payment {
+  + id: int
+  + name: string
+  + description: string
+}
+
+' --- SUPPLY CHAIN ---
+class supplier {
+  + id: int
+  + name: string
+  + contact: string
+  + phone: string
+  + email: string
+}
+
+' --- UBICATION ---
+class company {
+  + id: int
+  + name: string
+  + nit: string
+  + address: string
+}
+class headquarters {
+  + id: int
+  + company_id: int
+  + name: string
+  + address: string
+}
+
+' --- RELATIONSHIPS ---
+category "1" *-- "many" product
+supplier "1" *-- "many" product
+product "1" *-- "many" inventory
+billing "1" *-- "many" billing_detail
+billing_detail "many" --> "1" product
+billing "many" --> "1" user
+user "many" --> "1" person
+user "many" --> "1" role
+billing "many" --> "1" company
+billing "many" --> "1" headquarters
+billing "many" --> "1" method_payment
+company "1" *-- "many" headquarters
+
+@enduml

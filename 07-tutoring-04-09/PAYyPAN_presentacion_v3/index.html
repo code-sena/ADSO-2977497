@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto&nbsp;PAY&nbsp;&amp;&nbsp;PAN – Presentación</title>
+  <!-- Estilos reutilizados del proyecto de ejemplo -->
+  <link rel="stylesheet" href="asset/css/estilos.css">
+  <style>
+    /* Ajustes menores específicos de este proyecto */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .modules-grid a.card {
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 12px;
+      display: block;
+      text-align: center;
+      font-weight: 500;
+      color: #1f2937;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .modules-grid a.card:hover {
+      background: #e5e7eb;
+      transform: translateY(-2px);
+    }
+    /* Layout to ensure code blocks wrap nicely without overflowing */
+    pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+  <script>
+    /* Cambia de sección (Resumen, PAY, PAN) */
+    function openTab(evt, tabName) {
+      var i, sections, buttons;
+      sections = document.querySelectorAll('section');
+      for (i = 0; i < sections.length; i++) {
+        sections[i].classList.remove('active');
+      }
+      buttons = document.querySelectorAll('nav[role="tablist"] button');
+      for (i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+        buttons[i].setAttribute('aria-selected','false');
+      }
+      var targetSection = document.getElementById(tabName);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+        evt.currentTarget.setAttribute('aria-selected','true');
+      }
+      // Actualiza el hash de la URL para permitir navegación directa
+      try { location.hash = tabName; } catch (e) {}
+    }
+    /* Maneja subtabs dentro de cada módulo */
+    function openSubTab(elmnt, contentId) {
+      // Encuentra el contenedor de subtabs (padre de buttons)
+      var container = elmnt.parentElement.parentElement; // .subtabs -> parent (.card or section)
+      var contents = container.querySelectorAll('.subcontent');
+      for (var i=0; i<contents.length; i++) {
+        contents[i].classList.remove('active');
+      }
+      var buttons = elmnt.parentElement.querySelectorAll('button');
+      for (i=0; i<buttons.length; i++) {
+        buttons[i].classList.remove('active');
+      }
+      var target = container.querySelector('#'+contentId);
+      if (target) {
+        target.classList.add('active');
+      }
+      elmnt.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // activa la sección inicial basada en el hash
+      var initial = (location.hash || '').replace('#','');
+      var initialBtn = document.querySelector("nav button[data-tab='"+initial+"']");
+      if (initialBtn) {
+        openTab({currentTarget: initialBtn}, initial);
+      } else {
+        // por defecto mostrar Resumen
+        var firstBtn = document.querySelector('nav button');
+        if (firstBtn) openTab({currentTarget: firstBtn}, firstBtn.getAttribute('data-tab'));
+      }
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Proyecto PAY&nbsp;&amp;&nbsp;PAN</h1>
+    <p>Gestión integral de procesos empresariales: datos, arquitectura y transacciones</p>
+  </header>
+  <nav role="tablist" aria-label="Navegación de secciones">
+    <button role="tab" aria-controls="resumen" aria-selected="true" class="active" data-tab="resumen" onclick="openTab(event, 'resumen')">Resumen</button>
+    <button role="tab" aria-controls="pay" aria-selected="false" data-tab="pay" onclick="openTab(event, 'pay')">PAY</button>
+    <button role="tab" aria-controls="pan" aria-selected="false" data-tab="pan" onclick="openTab(event, 'pan')">PAN</button>
+  </nav>
+
+  <!-- Sección de Resumen -->
+  <section id="resumen" class="active">
+    <div class="card">
+      <h2>Resumen del Proyecto</h2>
+      <p>El proyecto <strong>PAY&nbsp;&amp;&nbsp;PAN</strong> integra de manera modular dos componentes fundamentales del sistema PANYPAN: la capa de <em>gestión de datos y pagos</em> (PAY) y la capa de <em>arquitectura y procesos de negocio</em> (PAN). Esta presentación reúne toda la documentación, diagramas y scripts que sustentan su diseño y desarrollo.</p>
+      <p>El módulo PAY se centra en la <strong>estructura de la base de datos</strong>, describiendo tablas y relaciones para gestionar entidades como compañías, sedes, personas, usuarios, roles, productos, facturación, inventario, métodos de pago y proveedores. La documentación de este módulo incluye el modelo entidad‑relación, scripts SQL y documentos técnicos asociados.</p>
+      <p>El módulo PAN presenta la <strong>arquitectura lógica y de interacción</strong> del sistema: diagramas de paquetes, clases, secuencias y casos de uso que muestran cómo los actores (clientes, empleados y administradores) interactúan con los servicios de negocio, parámetros, ubicación, pagos y cadena de suministro. Incluye tanto las imágenes como el código fuente en PlantUML para facilitar su edición y comprensión.</p>
+      <p>Utilice las pestañas superiores para explorar cada módulo. En cada sección encontrará subtabs que le permitirán navegar por los distintos artefactos.</p>
+    </div>
+  </section>
+
+  <!-- Sección PAY -->
+  <section id="pay">
+    <h2>Módulo PAY – Base de Datos</h2>
+    <p>Este módulo documenta el diseño de base de datos utilizado por PANYPAN. Se incluyen descripciones textuales, scripts de creación y los archivos fuente generados mediante MySQL Workbench. Puede explorar cada subsección para profundizar en el modelo o descargar los archivos correspondientes.</p>
+    <div class="card">
+      <div class="subtabs">
+        <button class="active" onclick="openSubTab(this,'pay-model')">Modelo de datos</button>
+        <button onclick="openSubTab(this,'pay-docs')">Documentos</button>
+        <button onclick="openSubTab(this,'pay-sql')">Script SQL</button>
+      </div>
+      <!-- Contenido: Modelo de datos -->
+      <div id="pay-model" class="subcontent active">
+        <h3>Modelo de datos</h3>
+        <p>Descripción general del esquema de la base de datos:</p>
+        <pre><code>
+context: La creación de la estructura de una base de datos es una etapa fundamental en el desarrollo de software, ya que garantiza la organización, integridad y eficiencia en el manejo de la información. En el contexto del proyecto formativo PANYPAN, se ha diseñado una base de datos relacional que responde a las necesidades de gestión de productos, ventas, clientes y usuarios. A través de MySQL Workbench, se ha elaborado el modelo entidad-relación y se han aplicado las restricciones necesarias como llaves primarias y foránea.
+
+# Sistema de Información para PANYPAN
+
+*** bussines core
+- category 
+- prodoct
+- billing
+- billing_detail
+- inventory
+
+*** parameter 
+- person
+- user
+- role
+
+*** payment
+- method_payment
+
+** supply chain
+- supplier
+
+** ubication
+  - company
+  - headquarters
+        </code></pre>
+      </div>
+      <!-- Contenido: Documentos -->
+      <div id="pay-docs" class="subcontent">
+        <h3>Archivos y documentos</h3>
+        <p>Puede descargar los siguientes documentos de base de datos:</p>
+        <ul>
+          <li><a href="asset/doc/pay/GA6-220501096-AA2-EV02 Creaci#U00f3n de la estructura de la BD y aplicaci#U00f3n de restricciones.pdf" download>Creación de la estructura de la BD y aplicación de restricciones (PDF)</a></li>
+          <li><a href="asset/doc/pay/document.pdf" download>Documento de estructura y restricciones (PDF)</a></li>
+          <li><a href="asset/doc/pay/MER.pdf" download>Modelo entidad‑relación (PDF)</a></li>
+          <li><a href="asset/doc/pay/MER.mwb" download>Modelo MySQL Workbench (MWB)</a></li>
+          <li><a href="asset/doc/pay/MER.mwb.bak" download>Copia de seguridad del modelo (BAK)</a></li>
+          <li><a href="asset/doc/pay/modelo-data-base.md" download>Descripción del modelo de datos (MD)</a></li>
+        </ul>
+      </div>
+      <!-- Contenido: Script SQL -->
+      <div id="pay-sql" class="subcontent">
+        <h3>Script SQL</h3>
+        <p>A continuación se muestra un extracto del script de creación de tablas. Puede descargar el archivo completo para más detalles.</p>
+        <pre><code>
+-- ==========================================================
+-- PANYPAN – Core Schema (MySQL 8.0+)
+-- Notes:
+-- - Singular names, PK = id
+-- - FK columns named &lt;entity&gt;_id
+-- - `user` se escapa con backticks por ser palabra reservada
+-- - Timestamps con CURRENT_TIMESTAMP
+-- ==========================================================
+
+-- =========================
+--  UBICATION / LOCATION
+-- =========================
+CREATE TABLE company (
+  id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  legal_name    VARCHAR(150)    NOT NULL,
+  trade_name    VARCHAR(150),
+  tax_id        VARCHAR(32)     NOT NULL,
+  email         VARCHAR(120),
+  phone         VARCHAR(40),
+  address       VARCHAR(200),
+  city          VARCHAR(100),
+  state         VARCHAR(100),
+  country       VARCHAR(100),
+  postal_code   VARCHAR(20),
+  is_active     TINYINT(1)      NOT NULL DEFAULT 1,
+  created_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_company_tax_id (tax_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE headquarter (
+  id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  company_id    BIGINT UNSIGNED NOT NULL,
+  code          VARCHAR(20)     NOT NULL,
+  name          VARCHAR(120)    NOT NULL,
+  email         VARCHAR(120),
+  phone         VARCHAR(40),
+  address       VARCHAR(200),
+  city          VARCHAR(100),
+  state         VARCHAR(100),
+  country       VARCHAR(100),
+  postal_code   VARCHAR(20),
+  is_active     TINYINT(1)      NOT NULL DEFAULT 1,
+  created_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_headquarter_company_code (company_id, code),
+  UNIQUE KEY uq_headquarter_company_name (company_id, name),
+  CONSTRAINT fk_headquarter_company
+    FOREIGN KEY (company_id) REFERENCES company(id)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Más tablas en el archivo completo...
+        </code></pre>
+        <p><a href="asset/doc/pay/script.sql" download>Descargar script SQL completo</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección PAN -->
+  <section id="pan">
+    <h2>Módulo PAN – Arquitectura</h2>
+    <p>El módulo PAN describe la arquitectura y el flujo de interacción de PANYPAN. Cada subpestaña presenta un conjunto de diagramas con su código PlantUML correspondiente. Puede copiar el código para modificar los diagramas o descargar las imágenes para su documentación.</p>
+    <div class="card">
+      <div class="subtabs">
+        <button class="active" onclick="openSubTab(this,'pan-paquetes')">Diagrama de paquetes</button>
+        <button onclick="openSubTab(this,'pan-clases')">Diagrama de clases</button>
+        <button onclick="openSubTab(this,'pan-secuencias')">Diagramas de secuencia</button>
+        <button onclick="openSubTab(this,'pan-despliegue')">Diagrama de despliegue</button>
+        <button onclick="openSubTab(this,'pan-casos')">Diagramas de casos de uso</button>
+      </div>
+      <!-- Paquetes -->
+      <div id="pan-paquetes" class="subcontent active">
+        <h3>Diagrama de paquetes</h3>
+        <img src="asset/doc/pan/panypany-packages-simple/panypany-packages-simple.png" alt="Diagrama de paquetes" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <h4>Código PlantUML</h4>
+        <pre><code>
+@startuml panypany-packages-simple
+' PANYPAN - Packages (minimal ASCII version)
+
+title PANYPAN - Package Diagram
+
+package "Business Core" as BusinessCore {
+  package Category
+  package Product
+  package Billing {
+    package "Billing Detail"
+  }
+  package Inventory
+}
+
+package "Parameter" as Parameter {
+  package Person
+  package User
+  package Role
+}
+
+package "Payment" as Payment {
+  package "Method Payment"
+}
+
+package "Supply Chain" as SupplyChain {
+  package Supplier
+}
+
+package "Ubication" as Ubication {
+  package Company
+  package Headquarters
+}
+
+BusinessCore ..&gt; Parameter
+BusinessCore ..&gt; Payment
+BusinessCore ..&gt; SupplyChain
+BusinessCore ..&gt; Ubication
+
+Billing ..&gt; "Method Payment"
+Inventory ..&gt; Supplier
+
+@enduml
+        </code></pre>
+      </div>
+      <!-- Clases -->
+      <div id="pan-clases" class="subcontent">
+        <h3>Diagrama de clases</h3>
+        <img src="asset/doc/pan/class-panypany-full/class-panypany-full.png" alt="Diagrama de clases" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <h4>Código PlantUML</h4>
+        <pre><code>
+@startuml class-panypany
+' PANYPAN – Class Diagram (IDs and FKs only, style as example)
+
+title PANYPAN – Class Diagram (IDs only)
+
+' --- PARAMETER ---
+class person {
+  + id
+}
+class user {
+  + id
+  + person_id
+  + role_id
+}
+class role {
+  + id
+}
+
+' --- BUSINESS CORE ---
+class category {
+  + id
+}
+class product {
+  + id
+  + category_id
+  + supplier_id
+}
+class inventory {
+  + id
+  + product_id
+}
+class billing {
+  + id
+  + user_id
+  + company_id
+  + headquarters_id
+  + method_payment_id
+}
+class billing_detail {
+  + id
+  + billing_id
+  + product_id
+}
+
+' --- PAYMENT ---
+class method_payment {
+  + id
+}
+
+' --- SUPPLY CHAIN ---
+class supplier {
+  + id
+}
+
+' --- UBICATION ---
+class company {
+  + id
+}
+class headquarters {
+  + id
+  + company_id
+}
+
+' --- RELATIONSHIPS ---
+category "1" *-- "many" product
+supplier "1" *-- "many" product
+product "1" *-- "many" inventory
+billing "1" *-- "many" billing_detail
+billing_detail "many" --&gt; "1" product
+billing "many" --&gt; "1" user
+user "many" --&gt; "1" person
+user "many" --&gt; "1" role
+billing "many" --&gt; "1" company
+billing "many" --&gt; "1" headquarters
+billing "many" --&gt; "1" method_payment
+company "1" *-- "many" headquarters
+
+@enduml
+        </code></pre>
+      </div>
+      <!-- Secuencias -->
+      <div id="pan-secuencias" class="subcontent">
+        <h3>Diagramas de secuencia</h3>
+        <h4>Secuencia de alto nivel</h4>
+        <img src="asset/doc/pan/panypany-sequence-highlevel/panypany-sequence-highlevel.png" alt="Secuencia alto nivel" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <pre><code>
+@startuml panypany-sequence-highlevel
+' PANYPAN - High Level Sequence Diagram (macroflujo)
+' Solo paquetes principales, sin detalle de servicios internos
+
+title PANYPAN - High Level Sale Sequence
+
+actor User
+participant "Parameter" as Parameter
+participant "Ubication" as Ubication
+participant "Business Core" as BusinessCore
+participant "Payment" as Payment
+participant "Supply Chain" as SupplyChain
+
+User -&gt; Parameter: Autenticación y validación de rol
+Parameter --&gt; User: Acceso autorizado
+
+User -&gt; Ubication: Selección de empresa/sede
+Ubication --&gt; User: Contexto de operación
+
+User -&gt; BusinessCore: Consulta catálogo y selecciona productos
+BusinessCore --&gt; User: Productos y stock
+
+User -&gt; BusinessCore: Solicita creación de factura
+BusinessCore --&gt; User: Factura creada
+
+User -&gt; Payment: Selecciona y confirma método de pago
+Payment --&gt; User: Pago procesado
+
+BusinessCore -&gt; SupplyChain: Solicita reabastecimiento (si aplica)
+SupplyChain --&gt; BusinessCore: Confirmación/ETA
+
+BusinessCore -&gt; Ubication: Actualiza inventario y registro
+Ubication --&gt; BusinessCore: Confirmación
+
+BusinessCore --&gt; User: Comprobante/Resumen de venta
+
+@enduml
+        </code></pre>
+        <h4>Secuencia de flujo de venta detallada</h4>
+        <img src="asset/doc/pan/panypany-sequence-sale/panypany-sequence-sale.png" alt="Secuencia de venta" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <pre><code>
+@startuml panypany-sequence-sale
+' PANYPAN - Sequence Diagram (Sale flow)
+' ASCII-only for maximum compatibility
+
+title PANYPAN - Sale Flow Sequence
+
+' Group participants by package using boxes
+box "Parameter"
+  actor User as user
+  participant "AuthService" as auth
+  participant "RoleService" as role
+end box
+
+box "Business Core"
+  participant "CategoryService" as category
+  participant "ProductService" as product
+  participant "BillingService" as billing
+  participant "BillingDetailService" as billingDetail
+  participant "InventoryService" as inventory
+end box
+
+box "Payment"
+  participant "PaymentService" as payment
+  participant "MethodPayment" as methodPayment
+end box
+
+box "Supply Chain"
+  participant "SupplierService" as supplier
+end box
+
+box "Ubication"
+  participant "CompanyService" as company
+  participant "HeadquartersService" as hq
+end box
+
+== Login and role validation ==
+user -&gt; auth: login(credentials)
+auth -&gt; role: getRoles(userId)
+role --&gt; auth: roles
+alt authorized
+  auth --&gt; user: login OK (token)
+else unauthorized
+  auth --&gt; user: error
+  return
+end
+
+== Select catalog context ==
+user -&gt; company: getCompanyContext(token)
+company -&gt; hq: getHeadquarters(companyId)
+hq --&gt; company: headquarters list
+company --&gt; user: company + headquarters
+
+== Browse catalog and select product ==
+user -&gt; category: listCategories()
+category --&gt; user: categories
+user -&gt; product: listByCategory(categoryId)
+product --&gt; user: products
+user -&gt; product: getProduct(productId)
+product --&gt; user: product detail (price, stock)
+
+== Create billing and add items ==
+user -&gt; billing: createBilling(userId, companyId, hqId)
+billing --&gt; user: billingId
+
+loop for each item
+  user -&gt; billingDetail: addItem(billingId, productId, qty, price)
+  billingDetail -&gt; inventory: reserveStock(productId, qty)
+  alt stock sufficient
+    inventory --&gt; billingDetail: reserved OK
+    billingDetail --&gt; user: item added
+  else low stock
+    inventory --&gt; billingDetail: low stock
+    billingDetail -&gt; supplier: requestReplenishment(productId, qty)
+    supplier --&gt; billingDetail: ETA / confirmation
+    billingDetail --&gt; user: item added (backorder)
+  end
+end
+
+== Choose payment method and confirm ==
+user -&gt; payment: selectPayment(billingId, method)
+payment -&gt; methodPayment: validate(method)
+methodPayment --&gt; payment: valid
+payment -&gt; billing: confirmPayment(billingId, method)
+billing --&gt; user: invoice number
+
+== Finalize and update inventory ==
+billing -&gt; inventory: decrementStock(items)
+inventory --&gt; billing: updated
+
+== Output ==
+billing -&gt; user: receipt / summary
+
+@enduml
+        </code></pre>
+      </div>
+      <!-- Despliegue -->
+      <div id="pan-despliegue" class="subcontent">
+        <h3>Diagrama de despliegue</h3>
+        <img src="asset/doc/pan/deployment-aws/deployment-aws-full.png" alt="Diagrama de despliegue" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <h4>Código PlantUML</h4>
+        <pre><code>
+@startuml deployment-aws-full
+' PANYPAN – Deployment Diagram (AWS, containers, CI/CD, jerarquía completa)
+
+title PANYPAN – Deployment Diagram (AWS, Containers, CI/CD, Full)
+
+artifact "GitHub Repo" as github
+node "Jenkins" as jenkins
+
+node "AWS Cloud" as aws {
+    node "ECS Cluster" as ecs {
+        node "Backend (Spring Boot)" as backend
+        node "App Web" as webapp
+        node "App Móvil" as mobileapp
+        database "DB (MySQL/PostgreSQL)" as db
+    }
+}
+
+' --- CI/CD Connections ---
+github --&gt; jenkins : Código fuente
+jenkins --&gt; backend : Build &amp; Deploy
+jenkins --&gt; webapp : Build &amp; Deploy
+jenkins --&gt; mobileapp : Build &amp; Deploy
+jenkins --&gt; db : DB migrations
+
+' --- App Communications ---
+webapp --&gt; backend : API REST
+mobileapp --&gt; backend : API REST
+backend --&gt; db : JDBC/ORM
+
+note right of github : Repositorio de código
+note right of jenkins : CI/CD: Build, test, deploy
+note right of backend : Java Spring Boot
+note right of webapp : React/Vue/Angular
+note right of mobileapp : Flutter/React Native/Android
+note right of db : MySQL o PostgreSQL
+
+@enduml
+        </code></pre>
+      </div>
+      <!-- Casos de uso -->
+      <div id="pan-casos" class="subcontent">
+        <h3>Diagramas de casos de uso</h3>
+        <h4>Caso de uso de alto nivel</h4>
+        <img src="asset/doc/pan/panypany-usecase-highlevel/panypany-usecase-highlevel.png" alt="Caso de uso alto nivel" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <pre><code>
+@startuml panypany-usecase-highlevel
+' PANYPAN - High Level Use Case Diagram
+
+title PANYPAN - High Level Use Cases
+
+' Mejor visualización vertical: actores a la izquierda, casos de uso en columna
+left to right direction
+
+actor Cliente as C
+actor Empleado as E
+actor Administrador as A
+
+rectangle "Sistema PANYPAN" {
+  usecase UC1 as "Gestionar ventas"
+  usecase UC2 as "Gestionar inventario"
+  usecase UC3 as "Gestionar productos"
+  usecase UC4 as "Gestionar pagos"
+  usecase UC5 as "Gestionar usuarios y roles"
+  usecase UC6 as "Gestionar proveedores"
+  usecase UC7 as "Gestionar sedes y empresas"
+}
+
+C -- UC1
+C -- UC4
+E -- UC1
+E -- UC2
+E -- UC3
+E -- UC4
+E -- UC6
+E -- UC7
+A -- UC5
+A -- UC7
+
+@enduml
+        </code></pre>
+        <h4>Caso de uso detallado de venta</h4>
+        <img src="asset/doc/pan/panypany-usecase-sale-detail/panypany-usecase-sale-detail.png" alt="Caso de uso de venta" style="max-width:100%;height:auto; border:1px solid #e5e7eb;">
+        <pre><code>
+@startuml panypany-usecase-sale-detail
+' PANYPAN - Detailed Use Case Diagram (Venta)
+
+title PANYPAN - Use Cases: Proceso de Venta Detallado
+
+
+left to right direction
+
+actor Cliente as C
+actor Empleado as E
+
+rectangle "Parameter" {
+  usecase UC1 as "Iniciar sesión"
+  usecase UC2 as "Seleccionar empresa/sede"
+}
+
+rectangle "Business Core" {
+  usecase UC3 as "Buscar productos"
+  usecase UC4 as "Agregar productos a factura"
+  usecase UC5 as "Verificar stock"
+  usecase UC6 as "Solicitar reabastecimiento"
+  usecase UC8 as "Confirmar venta y generar factura"
+}
+
+rectangle "Payment" {
+  usecase UC7 as "Seleccionar método de pago"
+}
+
+rectangle "Business Core / Output" {
+  usecase UC9 as "Emitir comprobante"
+}
+
+C -- UC1
+C -- UC2
+C -- UC3
+C -- UC4
+C -- UC7
+C -- UC8
+C -- UC9
+E -- UC1
+E -- UC2
+E -- UC3
+E -- UC4
+E -- UC5
+E -- UC6
+E -- UC7
+E -- UC8
+E -- UC9
+
+UC4 -- UC5 : &lt;&lt;include&gt;&gt;
+UC5 -- UC6 : &lt;&lt;extend&gt;&gt;
+UC8 -- UC9 : &lt;&lt;include&gt;&gt;
+
+@enduml
+        </code></pre>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+@startuml panypany-packages-simple
+' PANYPAN - Packages (minimal ASCII version)
+
+title PANYPAN - Package Diagram
+
+package "Business Core" as BusinessCore {
+  package Category
+  package Product
+  package Billing {
+    package "Billing Detail"
+  }
+  package Inventory
+}
+
+package "Parameter" as Parameter {
+  package Person
+  package User
+  package Role
+}
+
+package "Payment" as Payment {
+  package "Method Payment"
+}
+
+package "Supply Chain" as SupplyChain {
+  package Supplier
+}
+
+package "Ubication" as Ubication {
+  package Company
+  package Headquarters
+}
+
+BusinessCore ..> Parameter
+BusinessCore ..> Payment
+BusinessCore ..> SupplyChain
+BusinessCore ..> Ubication
+
+Billing ..> "Method Payment"
+Inventory ..> Supplier
+
+@enduml

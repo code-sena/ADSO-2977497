@@ -1,0 +1,37 @@
+@startuml panypany-sequence-highlevel
+' PANYPAN - High Level Sequence Diagram (macroflujo)
+' Solo paquetes principales, sin detalle de servicios internos
+
+title PANYPAN - High Level Sale Sequence
+
+actor User
+participant "Parameter" as Parameter
+participant "Ubication" as Ubication
+participant "Business Core" as BusinessCore
+participant "Payment" as Payment
+participant "Supply Chain" as SupplyChain
+
+User -> Parameter: Autenticación y validación de rol
+Parameter --> User: Acceso autorizado
+
+User -> Ubication: Selección de empresa/sede
+Ubication --> User: Contexto de operación
+
+User -> BusinessCore: Consulta catálogo y selecciona productos
+BusinessCore --> User: Productos y stock
+
+User -> BusinessCore: Solicita creación de factura
+BusinessCore --> User: Factura creada
+
+User -> Payment: Selecciona y confirma método de pago
+Payment --> User: Pago procesado
+
+BusinessCore -> SupplyChain: Solicita reabastecimiento (si aplica)
+SupplyChain --> BusinessCore: Confirmación/ETA
+
+BusinessCore -> Ubication: Actualiza inventario y registro
+Ubication --> BusinessCore: Confirmación
+
+BusinessCore --> User: Comprobante/Resumen de venta
+
+@enduml

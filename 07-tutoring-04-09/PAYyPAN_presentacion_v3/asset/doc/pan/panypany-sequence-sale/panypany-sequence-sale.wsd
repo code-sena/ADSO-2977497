@@ -1,0 +1,93 @@
+@startuml panypany-sequence-sale
+' PANYPAN - Sequence Diagram (Sale flow)
+' ASCII-only for maximum compatibility
+
+title PANYPAN - Sale Flow Sequence
+
+' Group participants by package using boxes
+box "Parameter"
+  actor User as user
+  participant "AuthService" as auth
+  participant "RoleService" as role
+end box
+
+box "Business Core"
+  participant "CategoryService" as category
+  participant "ProductService" as product
+  participant "BillingService" as billing
+  participant "BillingDetailService" as billingDetail
+  participant "InventoryService" as inventory
+end box
+
+box "Payment"
+  participant "PaymentService" as payment
+  participant "MethodPayment" as methodPayment
+end box
+
+box "Supply Chain"
+  participant "SupplierService" as supplier
+end box
+
+box "Ubication"
+  participant "CompanyService" as company
+  participant "HeadquartersService" as hq
+end box
+
+== Login and role validation ==
+user -> auth: login(credentials)
+auth -> role: getRoles(userId)
+role --> auth: roles
+alt authorized
+  auth --> user: login OK (token)
+else unauthorized
+  auth --> user: error
+  return
+end
+
+== Select catalog context ==
+user -> company: getCompanyContext(token)
+company -> hq: getHeadquarters(companyId)
+hq --> company: headquarters list
+company --> user: company + headquarters
+
+== Browse catalog and select product ==
+user -> category: listCategories()
+category --> user: categories
+user -> product: listByCategory(categoryId)
+product --> user: products
+user -> product: getProduct(productId)
+product --> user: product detail (price, stock)
+
+== Create billing and add items ==
+user -> billing: createBilling(userId, companyId, hqId)
+billing --> user: billingId
+
+loop for each item
+  user -> billingDetail: addItem(billingId, productId, qty, price)
+  billingDetail -> inventory: reserveStock(productId, qty)
+  alt stock sufficient
+    inventory --> billingDetail: reserved OK
+    billingDetail --> user: item added
+  else low stock
+    inventory --> billingDetail: low stock
+    billingDetail -> supplier: requestReplenishment(productId, qty)
+    supplier --> billingDetail: ETA / confirmation
+    billingDetail --> user: item added (backorder)
+  end
+end
+
+== Choose payment method and confirm ==
+user -> payment: selectPayment(billingId, method)
+payment -> methodPayment: validate(method)
+methodPayment --> payment: valid
+payment -> billing: confirmPayment(billingId, method)
+billing --> user: invoice number
+
+== Finalize and update inventory ==
+billing -> inventory: decrementStock(items)
+inventory --> billing: updated
+
+== Output ==
+billing -> user: receipt / summary
+
+@enduml
