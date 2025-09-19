@@ -1,0 +1,818 @@
+/* ================================================
+   PanyPan Forms - CSS Styles
+   Estilos para formularios y DataTables de módulos
+================================================ */
+
+/* ================================================
+   VARIABLES ESPECÍFICAS PARA FORMULARIOS
+================================================ */
+:root {
+    /* Formularios */
+    --form-bg: var(--white);
+    --form-border: var(--light-blue);
+    --form-focus: var(--primary-blue);
+    --form-error: var(--danger);
+    --form-success: var(--success);
+    
+    /* Campos */
+    --field-bg: var(--white);
+    --field-border: #e1e5e9;
+    --field-focus-border: var(--primary-blue);
+    --field-disabled-bg: #f8f9fa;
+    
+    /* Botones */
+    --btn-primary-bg: var(--primary-blue);
+    --btn-secondary-bg: var(--gray);
+    --btn-danger-bg: var(--danger);
+    --btn-outline-border: var(--primary-blue);
+    
+    /* DataTable */
+    --table-header-bg: var(--light-blue);
+    --table-row-hover: rgba(37, 99, 235, 0.05);
+    --table-border: #e1e5e9;
+    
+    /* Status badges */
+    --status-active-bg: var(--success);
+    --status-inactive-bg: var(--gray);
+}
+
+/* ================================================
+   CONTENEDOR PRINCIPAL DEL MÓDULO
+================================================ */
+.module-container {
+    padding: var(--spacing-lg);
+    background: var(--workspace-bg);
+    min-height: 100vh;
+}
+
+/* ================================================
+   HEADER DEL MÓDULO
+================================================ */
+.module-header {
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--form-border);
+}
+
+.module-header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.module-header h1 i {
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+}
+
+.module-header p {
+    font-size: 1.1rem;
+    color: var(--gray);
+    margin: 0;
+}
+
+/* ================================================
+   CONTENEDOR DEL FORMULARIO
+================================================ */
+.form-container {
+    background: var(--form-bg);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--form-border);
+}
+
+/* ================================================
+   FORMULARIO PRINCIPAL
+================================================ */
+.entity-form {
+    width: 100%;
+}
+
+/* Grid del formulario */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Secciones del formulario */
+.form-section {
+    border: 2px solid var(--form-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
+}
+
+.form-section.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-section legend {
+    background: var(--primary-blue);
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Filas del formulario */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+/* Grupos de campos */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Etiquetas */
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-weight: 500;
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+}
+
+.form-group label.required::after {
+    content: '*';
+    color: var(--form-error);
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.form-group label i {
+    color: var(--primary-blue);
+    width: 16px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Campos de entrada */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--field-border);
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    background: var(--field-bg);
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--field-focus-border);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: var(--white);
+}
+
+.form-group input:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled {
+    background: var(--field-disabled-bg);
+    color: var(--gray);
+    cursor: not-allowed;
+}
+
+/* Placeholder */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--gray);
+    opacity: 0.7;
+}
+
+/* Hints de campos */
+.field-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* ================================================
+   TOGGLE SWITCH (para campos boolean)
+================================================ */
+.toggle-label {
+    display: flex !important;
+    align-items: center;
+    gap: var(--spacing-md);
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background: var(--gray);
+    border-radius: 24px;
+    transition: all 0.3s ease;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-slider {
+    background: var(--primary-blue);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-slider::before {
+    transform: translateX(26px);
+}
+
+.toggle-text {
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+/* ================================================
+   BOTONES DE ACCIÓN
+================================================ */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--form-border);
+}
+
+/* Estilos base de botones */
+.btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    text-decoration: none;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Variantes de botones */
+.btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--dark-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--white);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--dark-gray);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: var(--btn-danger-bg);
+    color: var(--white);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--btn-outline-border);
+    border: 2px solid var(--btn-outline-border);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--btn-outline-border);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* Tamaños de botones */
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.85rem;
+    min-width: 100px;
+}
+
+/* ================================================
+   DATATABLE
+================================================ */
+.table-container {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--table-border);
+    overflow: hidden;
+}
+
+/* Header de la tabla */
+.table-header {
+    background: var(--table-header-bg);
+    padding: var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    border-bottom: 2px solid var(--table-border);
+}
+
+.table-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.table-header h2 i {
+    color: var(--primary-blue);
+}
+
+/* Controles de la tabla */
+.table-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+/* Caja de búsqueda */
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: var(--spacing-md);
+    color: var(--gray);
+    z-index: 1;
+}
+
+.search-box input {
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 40px;
+    border: 2px solid var(--field-border);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Wrapper de la tabla */
+.data-table-wrapper {
+    overflow-x: auto;
+    max-height: 600px;
+}
+
+/* Tabla de datos */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.data-table th,
+.data-table td {
+    padding: var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--table-border);
+}
+
+.data-table th {
+    background: var(--table-header-bg);
+    font-weight: 600;
+    color: var(--dark-blue);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.data-table tbody tr:hover {
+    background: var(--table-row-hover);
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: rgba(248, 250, 252, 0.5);
+}
+
+/* ================================================
+   STATUS BADGES
+================================================ */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+    background: var(--status-active-bg);
+    color: var(--white);
+}
+
+.status-badge.inactive {
+    background: var(--status-inactive-bg);
+    color: var(--white);
+}
+
+/* ================================================
+   BOTONES DE ACCIÓN EN TABLA
+================================================ */
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: center;
+}
+
+.btn-action {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.btn-action.edit {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.btn-action.edit:hover {
+    background: var(--dark-blue);
+    transform: scale(1.1);
+}
+
+.btn-action.delete {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.btn-action.delete:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+}
+
+.btn-action.view {
+    background: var(--success);
+    color: var(--white);
+}
+
+.btn-action.view:hover {
+    background: #059669;
+    transform: scale(1.1);
+}
+
+/* ================================================
+   PAGINACIÓN
+================================================ */
+.table-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--light-blue);
+    border-top: 1px solid var(--table-border);
+}
+
+.pagination-info {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-pagination {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--table-border);
+    background: var(--white);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+}
+
+.btn-pagination:hover:not(:disabled) {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.btn-pagination:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-current {
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--primary-blue);
+    color: var(--white);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* ================================================
+   RESPONSIVE DESIGN
+================================================ */
+@media (max-width: 1024px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .table-controls {
+        justify-content: space-between;
+    }
+    
+    .search-box input {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .module-container {
+        padding: var(--spacing-md);
+    }
+    
+    .form-container {
+        padding: var(--spacing-lg);
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .search-box input {
+        width: 150px;
+    }
+    
+    .table-pagination {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .module-header h1 {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .data-table {
+        font-size: 0.8rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: var(--spacing-sm);
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+}
+
+/* ================================================
+   PERMISSIONS SYSTEM STYLES
+================================================ */
+
+/* Permissions Grid Styles */
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.permission-section {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.permission-section h4 {
+    color: var(--primary-color);
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.permission-section h4 i {
+    font-size: 18px;
+}
+
+.permission-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.permission-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.permission-checkbox:hover {
+    background-color: var(--gray-100);
+}
+
+.permission-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.permission-checkbox .checkmark {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.permission-checkbox .checkmark::after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.permission-checkbox input[type="checkbox"]:checked + .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.permission-checkbox input[type="checkbox"]:checked + .checkmark::after {
+    display: block;
+}
+
+.permission-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.permissions-count {
+    background: var(--primary-color);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Password Input Styles */
+.password-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-group input {
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--primary-color);
+}
+
+.password-toggle:focus {
+    outline: none;
+    color: var(--primary-color);
+}

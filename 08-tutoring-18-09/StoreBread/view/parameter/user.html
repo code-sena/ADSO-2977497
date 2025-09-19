@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - PanyPan</title>
+    <link rel="stylesheet" href="../../asset/css/main.css">
+    <link rel="stylesheet" href="../../asset/css/dashboard.css">
+    <link rel="stylesheet" href="../../asset/css/forms.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="module-container">
+        <!-- Título del formulario -->
+        <div class="module-header">
+            <h1><i class="fas fa-user-cog"></i> Gestión de Usuarios</h1>
+            <p>Administra las cuentas de usuario y sus accesos al sistema</p>
+        </div>
+
+        <!-- Formulario de captura -->
+        <div class="form-container">
+            <form id="userForm" class="entity-form">
+                <!-- ID oculto (PK) -->
+                <input type="hidden" id="userId" name="id" value="">
+
+                <div class="form-grid">
+                    <!-- Información de la Persona -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-user"></i> Información Personal</legend>
+                        
+                        <div class="form-group">
+                            <label for="personId" class="required">
+                                <i class="fas fa-user"></i>
+                                Persona
+                            </label>
+                            <select id="personId" name="person_id" required>
+                                <option value="">Selecciona una persona</option>
+                                <option value="1">Juan Carlos Pérez García (CC 12345678)</option>
+                                <option value="2">María Elena Rodríguez López (CC 87654321)</option>
+                                <option value="3">Carlos Alberto Sánchez Morales (CE 98765432)</option>
+                                <option value="4">Ana Patricia González Herrera (CC 11223344)</option>
+                                <option value="5">Luis Fernando Martínez Castro (TI 55667788)</option>
+                                <option value="6">Carmen Rosa Jiménez Vargas (CC 99887766)</option>
+                                <option value="7">Roberto Antonio Díaz Mendoza (PP A1234567)</option>
+                                <option value="8">Patricia Lucía Torres Ramírez (CC 44556677)</option>
+                                <option value="9">Jorge Enrique Moreno Silva (CC 33445566)</option>
+                                <option value="10">Claudia Esperanza Ruiz Aguilar (CC 66778899)</option>
+                            </select>
+                            <small class="field-hint">Persona asociada a esta cuenta de usuario</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información del Rol -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-user-shield"></i> Rol del Usuario</legend>
+                        
+                        <div class="form-group">
+                            <label for="roleId" class="required">
+                                <i class="fas fa-user-shield"></i>
+                                Rol
+                            </label>
+                            <select id="roleId" name="role_id" required>
+                                <option value="">Selecciona un rol</option>
+                                <option value="1">Super Administrador</option>
+                                <option value="2">Administrador</option>
+                                <option value="3">Supervisor</option>
+                                <option value="4">Vendedor</option>
+                                <option value="5">Cajero</option>
+                                <option value="6">Contador</option>
+                                <option value="7">Jefe de Producción</option>
+                                <option value="8">Operario</option>
+                                <option value="9">Auxiliar Contable</option>
+                                <option value="10">Cliente Premium</option>
+                            </select>
+                            <small class="field-hint">Rol que determina los permisos del usuario</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información de Acceso -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-key"></i> Información de Acceso</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="username" class="required">
+                                    <i class="fas fa-user"></i>
+                                    Nombre de Usuario
+                                </label>
+                                <input type="text" id="username" name="username" required 
+                                       placeholder="juanperez" maxlength="50" style="text-transform: lowercase;">
+                                <small class="field-hint">Nombre único para acceder al sistema</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="required">
+                                    <i class="fas fa-envelope"></i>
+                                    Email de Usuario
+                                </label>
+                                <input type="email" id="email" name="email" required 
+                                       placeholder="usuario@empresa.com" maxlength="120">
+                                <small class="field-hint">Email para notificaciones del sistema</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password" class="required">
+                                    <i class="fas fa-lock"></i>
+                                    Contraseña
+                                </label>
+                                <div class="password-input-group">
+                                    <input type="password" id="password" name="password" required 
+                                           placeholder="Mínimo 8 caracteres" minlength="8">
+                                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                        <i class="fas fa-eye" id="passwordEye"></i>
+                                    </button>
+                                </div>
+                                <small class="field-hint">Mínimo 8 caracteres, incluir mayúsculas, minúsculas y números</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword" class="required">
+                                    <i class="fas fa-lock"></i>
+                                    Confirmar Contraseña
+                                </label>
+                                <div class="password-input-group">
+                                    <input type="password" id="confirmPassword" name="confirm_password" required 
+                                           placeholder="Repetir contraseña" minlength="8">
+                                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                        <i class="fas fa-eye" id="confirmPasswordEye"></i>
+                                    </button>
+                                </div>
+                                <small class="field-hint">Debe coincidir con la contraseña anterior</small>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Configuración de Seguridad -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-shield-alt"></i> Configuración de Seguridad</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="lastLogin">
+                                    <i class="fas fa-clock"></i>
+                                    Último Acceso
+                                </label>
+                                <input type="datetime-local" id="lastLogin" name="last_login" readonly>
+                                <small class="field-hint">Fecha y hora del último acceso al sistema</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loginAttempts">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Intentos de Acceso
+                                </label>
+                                <input type="number" id="loginAttempts" name="login_attempts" 
+                                       value="0" min="0" max="10" readonly>
+                                <small class="field-hint">Número de intentos fallidos consecutivos</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="mustChangePassword" name="must_change_password">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-text">Debe Cambiar Contraseña</span>
+                                </label>
+                                <small class="field-hint">Obligar al usuario a cambiar la contraseña en el próximo acceso</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="isLocked" name="is_locked">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-text">Cuenta Bloqueada</span>
+                                </label>
+                                <small class="field-hint">Bloquear temporalmente el acceso del usuario</small>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Estado -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-toggle-on"></i> Estado</legend>
+                        
+                        <div class="form-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="isActive" name="is_active" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Usuario Activo</span>
+                            </label>
+                            <small class="field-hint">Define si el usuario está activo en el sistema</small>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Usuario
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="editUser()">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser()">
+                        <i class="fas fa-trash"></i>
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="cancelForm()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="resetPassword()">
+                        <i class="fas fa-sync"></i>
+                        Resetear Contraseña
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- DataTable -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> Lista de Usuarios</h2>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar usuarios..." id="searchInput">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="newUser()">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Usuario
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Persona</th>
+                            <th>Rol</th>
+                            <th>Email</th>
+                            <th>Último Acceso</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Registros sintéticos de ejemplo -->
+                        <tr>
+                            <td>1</td>
+                            <td>admin</td>
+                            <td>Juan Carlos Pérez</td>
+                            <td>Super Administrador</td>
+                            <td>admin@panypan.com</td>
+                            <td>2024-01-25 14:30</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(1)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(1)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>maria.rodriguez</td>
+                            <td>María Elena Rodríguez</td>
+                            <td>Administrador</td>
+                            <td>maria.rodriguez@panypan.com</td>
+                            <td>2024-01-25 10:15</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(2)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(2)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>carlos.sanchez</td>
+                            <td>Carlos Alberto Sánchez</td>
+                            <td>Supervisor</td>
+                            <td>carlos.sanchez@panypan.com</td>
+                            <td>2024-01-24 16:45</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(3)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(3)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>ana.gonzalez</td>
+                            <td>Ana Patricia González</td>
+                            <td>Vendedor</td>
+                            <td>ana.gonzalez@panypan.com</td>
+                            <td>2024-01-25 09:30</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(4)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(4)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>luis.martinez</td>
+                            <td>Luis Fernando Martínez</td>
+                            <td>Cajero</td>
+                            <td>luis.martinez@panypan.com</td>
+                            <td>2024-01-25 08:00</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(5)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(5)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>carmen.jimenez</td>
+                            <td>Carmen Rosa Jiménez</td>
+                            <td>Contador</td>
+                            <td>carmen.jimenez@panypan.com</td>
+                            <td>2024-01-24 17:20</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(6)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(6)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>roberto.diaz</td>
+                            <td>Roberto Antonio Díaz</td>
+                            <td>Jefe de Producción</td>
+                            <td>roberto.diaz@panypan.com</td>
+                            <td>2024-01-23 14:10</td>
+                            <td><span class="status-badge inactive">Inactivo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(7)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(7)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>patricia.torres</td>
+                            <td>Patricia Lucía Torres</td>
+                            <td>Operario</td>
+                            <td>patricia.torres@panypan.com</td>
+                            <td>2024-01-25 07:45</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(8)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(8)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>jorge.moreno</td>
+                            <td>Jorge Enrique Moreno</td>
+                            <td>Auxiliar Contable</td>
+                            <td>jorge.moreno@panypan.com</td>
+                            <td>2024-01-22 11:30</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(9)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(9)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>claudia.ruiz</td>
+                            <td>Claudia Esperanza Ruiz</td>
+                            <td>Cliente Premium</td>
+                            <td>claudia.ruiz@cliente.com</td>
+                            <td>2024-01-25 12:00</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadUser(10)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(10)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="table-pagination">
+                <span class="pagination-info">Mostrando 1-10 de 10 registros</span>
+                <div class="pagination-controls">
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="pagination-current">1</span>
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../logic/modules/user.js"></script>
+</body>
+</html>

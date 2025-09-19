@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Roles - PanyPan</title>
+    <link rel="stylesheet" href="../../asset/css/main.css">
+    <link rel="stylesheet" href="../../asset/css/dashboard.css">
+    <link rel="stylesheet" href="../../asset/css/forms.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="module-container">
+        <!-- Título del formulario -->
+        <div class="module-header">
+            <h1><i class="fas fa-user-shield"></i> Gestión de Roles</h1>
+            <p>Administra los roles y permisos del sistema</p>
+        </div>
+
+        <!-- Formulario de captura -->
+        <div class="form-container">
+            <form id="roleForm" class="entity-form">
+                <!-- ID oculto (PK) -->
+                <input type="hidden" id="roleId" name="id" value="">
+
+                <div class="form-grid">
+                    <!-- Información Básica del Rol -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-tag"></i> Información del Rol</legend>
+                        
+                        <div class="form-group">
+                            <label for="name" class="required">
+                                <i class="fas fa-user-shield"></i>
+                                Nombre del Rol
+                            </label>
+                            <input type="text" id="name" name="name" required 
+                                   placeholder="Administrador" maxlength="100">
+                            <small class="field-hint">Nombre descriptivo del rol en el sistema</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">
+                                <i class="fas fa-align-left"></i>
+                                Descripción
+                            </label>
+                            <textarea id="description" name="description" rows="4" 
+                                      placeholder="Descripción detallada de las responsabilidades y permisos del rol..." 
+                                      maxlength="500"></textarea>
+                            <small class="field-hint">Describe las funciones y responsabilidades de este rol</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- Configuración de Permisos -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-key"></i> Configuración de Permisos</legend>
+                        
+                        <div class="permissions-grid">
+                            <!-- Módulo de Ubicación -->
+                            <div class="permission-section">
+                                <h4><i class="fas fa-building"></i> Módulo de Ubicación</h4>
+                                <div class="permission-options">
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="company_read">
+                                        <span class="checkmark"></span>
+                                        Ver Empresas
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="company_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Empresas
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="headquarters_read">
+                                        <span class="checkmark"></span>
+                                        Ver Sedes
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="headquarters_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Sedes
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Módulo de Parámetros -->
+                            <div class="permission-section">
+                                <h4><i class="fas fa-users"></i> Módulo de Parámetros</h4>
+                                <div class="permission-options">
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="persons_read">
+                                        <span class="checkmark"></span>
+                                        Ver Personas
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="persons_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Personas
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="users_read">
+                                        <span class="checkmark"></span>
+                                        Ver Usuarios
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="users_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Usuarios
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="roles_read">
+                                        <span class="checkmark"></span>
+                                        Ver Roles
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="roles_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Roles
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Módulo de Facturación -->
+                            <div class="permission-section">
+                                <h4><i class="fas fa-file-invoice-dollar"></i> Módulo de Facturación</h4>
+                                <div class="permission-options">
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="billing_read">
+                                        <span class="checkmark"></span>
+                                        Ver Facturas
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="billing_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Facturas
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="payment_methods_read">
+                                        <span class="checkmark"></span>
+                                        Ver Métodos de Pago
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="payment_methods_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Métodos de Pago
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Módulo de Cadena de Suministro -->
+                            <div class="permission-section">
+                                <h4><i class="fas fa-truck"></i> Cadena de Suministro</h4>
+                                <div class="permission-options">
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="suppliers_read">
+                                        <span class="checkmark"></span>
+                                        Ver Proveedores
+                                    </label>
+                                    <label class="permission-checkbox">
+                                        <input type="checkbox" name="permissions" value="suppliers_write">
+                                        <span class="checkmark"></span>
+                                        Crear/Editar Proveedores
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="permission-actions">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="selectAllPermissions()">
+                                <i class="fas fa-check-double"></i>
+                                Seleccionar Todos
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="clearAllPermissions()">
+                                <i class="fas fa-times"></i>
+                                Limpiar Todos
+                            </button>
+                        </div>
+                    </fieldset>
+
+                    <!-- Estado -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-toggle-on"></i> Estado</legend>
+                        
+                        <div class="form-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="isActive" name="is_active" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Rol Activo</span>
+                            </label>
+                            <small class="field-hint">Define si el rol está activo y disponible para asignar</small>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Rol
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="editRole()">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteRole()">
+                        <i class="fas fa-trash"></i>
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="cancelForm()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- DataTable -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> Lista de Roles</h2>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar roles..." id="searchInput">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="newRole()">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Rol
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="rolesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Permisos</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Registros sintéticos de ejemplo -->
+                        <tr>
+                            <td>1</td>
+                            <td>Super Administrador</td>
+                            <td>Acceso completo a todo el sistema</td>
+                            <td><span class="permissions-count">12 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(1)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(1)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Administrador</td>
+                            <td>Gestión de operaciones principales</td>
+                            <td><span class="permissions-count">8 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(2)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(2)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Supervisor</td>
+                            <td>Supervisión de procesos y personal</td>
+                            <td><span class="permissions-count">6 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(3)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(3)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Vendedor</td>
+                            <td>Gestión de ventas y clientes</td>
+                            <td><span class="permissions-count">4 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(4)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(4)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Cajero</td>
+                            <td>Manejo de caja y pagos</td>
+                            <td><span class="permissions-count">3 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(5)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(5)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Contador</td>
+                            <td>Gestión contable y financiera</td>
+                            <td><span class="permissions-count">5 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(6)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(6)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Jefe de Producción</td>
+                            <td>Supervisión de producción y calidad</td>
+                            <td><span class="permissions-count">4 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(7)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(7)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Operario</td>
+                            <td>Personal de producción básica</td>
+                            <td><span class="permissions-count">2 permisos</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(8)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(8)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Auxiliar Contable</td>
+                            <td>Apoyo en procesos contables</td>
+                            <td><span class="permissions-count">3 permisos</span></td>
+                            <td><span class="status-badge inactive">Inactivo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(9)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(9)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Cliente Premium</td>
+                            <td>Cliente con acceso especial</td>
+                            <td><span class="permissions-count">1 permiso</span></td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadRole(10)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(10)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="table-pagination">
+                <span class="pagination-info">Mostrando 1-10 de 10 registros</span>
+                <div class="pagination-controls">
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="pagination-current">1</span>
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../logic/modules/role.js"></script>
+</body>
+</html>

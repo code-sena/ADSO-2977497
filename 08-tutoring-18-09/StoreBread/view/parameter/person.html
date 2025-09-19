@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Personas - PanyPan</title>
+    <link rel="stylesheet" href="../../asset/css/main.css">
+    <link rel="stylesheet" href="../../asset/css/dashboard.css">
+    <link rel="stylesheet" href="../../asset/css/forms.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="module-container">
+        <!-- Título del formulario -->
+        <div class="module-header">
+            <h1><i class="fas fa-users"></i> Gestión de Personas</h1>
+            <p>Administra la información personal de empleados, clientes y proveedores</p>
+        </div>
+
+        <!-- Formulario de captura -->
+        <div class="form-container">
+            <form id="personForm" class="entity-form">
+                <!-- ID oculto (PK) -->
+                <input type="hidden" id="personId" name="id" value="">
+
+                <div class="form-grid">
+                    <!-- Información de Identificación -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-id-card"></i> Identificación</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="documentType" class="required">
+                                    <i class="fas fa-id-card-alt"></i>
+                                    Tipo de Documento
+                                </label>
+                                <select id="documentType" name="document_type" required>
+                                    <option value="">Selecciona tipo</option>
+                                    <option value="CC">Cédula de Ciudadanía</option>
+                                    <option value="CE">Cédula de Extranjería</option>
+                                    <option value="TI">Tarjeta de Identidad</option>
+                                    <option value="PP">Pasaporte</option>
+                                    <option value="RC">Registro Civil</option>
+                                    <option value="NIT">NIT</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="documentNumber" class="required">
+                                    <i class="fas fa-hashtag"></i>
+                                    Número de Documento
+                                </label>
+                                <input type="text" id="documentNumber" name="document_number" required 
+                                       placeholder="12345678" maxlength="20">
+                                <small class="field-hint">Sin puntos ni espacios</small>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información Personal -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-user"></i> Información Personal</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="required">
+                                    <i class="fas fa-user"></i>
+                                    Nombres
+                                </label>
+                                <input type="text" id="firstName" name="first_name" required 
+                                       placeholder="Juan Carlos" maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName" class="required">
+                                    <i class="fas fa-user-tag"></i>
+                                    Apellidos
+                                </label>
+                                <input type="text" id="lastName" name="last_name" required 
+                                       placeholder="Pérez García" maxlength="100">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birthDate">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Fecha de Nacimiento
+                                </label>
+                                <input type="date" id="birthDate" name="birth_date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender">
+                                    <i class="fas fa-venus-mars"></i>
+                                    Género
+                                </label>
+                                <select id="gender" name="gender">
+                                    <option value="">Selecciona género</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="O">Otro</option>
+                                    <option value="P">Prefiero no decir</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información de Contacto -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-address-card"></i> Información de Contacto</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email" class="required">
+                                    <i class="fas fa-envelope"></i>
+                                    Correo Electrónico
+                                </label>
+                                <input type="email" id="email" name="email" required 
+                                       placeholder="persona@correo.com" maxlength="120">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="required">
+                                    <i class="fas fa-phone"></i>
+                                    Teléfono Principal
+                                </label>
+                                <input type="tel" id="phone" name="phone" required 
+                                       placeholder="+57 300 123-4567" maxlength="40">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="alternatePhone">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Teléfono Alternativo
+                                </label>
+                                <input type="tel" id="alternatePhone" name="alternate_phone" 
+                                       placeholder="+57 1 234-5678" maxlength="40">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emergencyContact">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Contacto de Emergencia
+                                </label>
+                                <input type="text" id="emergencyContact" name="emergency_contact" 
+                                       placeholder="Nombre y teléfono" maxlength="200">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información de Ubicación -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-map-marker-alt"></i> Ubicación</legend>
+                        
+                        <div class="form-group">
+                            <label for="address">
+                                <i class="fas fa-road"></i>
+                                Dirección de Residencia
+                            </label>
+                            <input type="text" id="address" name="address" 
+                                   placeholder="Calle 123 #45-67 Apt 301" maxlength="200">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">
+                                    <i class="fas fa-city"></i>
+                                    Ciudad
+                                </label>
+                                <input type="text" id="city" name="city" 
+                                       placeholder="Bogotá" maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="state">
+                                    <i class="fas fa-map"></i>
+                                    Departamento/Estado
+                                </label>
+                                <input type="text" id="state" name="state" 
+                                       placeholder="Cundinamarca" maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country">
+                                    <i class="fas fa-flag"></i>
+                                    País
+                                </label>
+                                <input type="text" id="country" name="country" 
+                                       placeholder="Colombia" maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postalCode">
+                                    <i class="fas fa-mail-bulk"></i>
+                                    Código Postal
+                                </label>
+                                <input type="text" id="postalCode" name="postal_code" 
+                                       placeholder="110111" maxlength="20">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Estado -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-toggle-on"></i> Estado</legend>
+                        
+                        <div class="form-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="isActive" name="is_active" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Persona Activa</span>
+                            </label>
+                            <small class="field-hint">Define si la persona está activa en el sistema</small>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Persona
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="editPerson()">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deletePerson()">
+                        <i class="fas fa-trash"></i>
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="cancelForm()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- DataTable -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> Lista de Personas</h2>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar personas..." id="searchInput">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="newPerson()">
+                        <i class="fas fa-plus"></i>
+                        Nueva Persona
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="personsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Documento</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Registros sintéticos de ejemplo -->
+                        <tr>
+                            <td>1</td>
+                            <td>CC 12345678</td>
+                            <td>Juan Carlos</td>
+                            <td>Pérez García</td>
+                            <td>juan.perez@email.com</td>
+                            <td>+57 300 123-4567</td>
+                            <td>Bogotá</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(1)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(1)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>CC 87654321</td>
+                            <td>María Elena</td>
+                            <td>Rodríguez López</td>
+                            <td>maria.rodriguez@email.com</td>
+                            <td>+57 301 987-6543</td>
+                            <td>Medellín</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(2)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(2)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>CE 98765432</td>
+                            <td>Carlos Alberto</td>
+                            <td>Sánchez Morales</td>
+                            <td>carlos.sanchez@email.com</td>
+                            <td>+57 302 456-7890</td>
+                            <td>Cali</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(3)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(3)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>CC 11223344</td>
+                            <td>Ana Patricia</td>
+                            <td>González Herrera</td>
+                            <td>ana.gonzalez@email.com</td>
+                            <td>+57 303 789-0123</td>
+                            <td>Barranquilla</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(4)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(4)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>TI 55667788</td>
+                            <td>Luis Fernando</td>
+                            <td>Martínez Castro</td>
+                            <td>luis.martinez@email.com</td>
+                            <td>+57 304 234-5678</td>
+                            <td>Bucaramanga</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(5)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(5)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>CC 99887766</td>
+                            <td>Carmen Rosa</td>
+                            <td>Jiménez Vargas</td>
+                            <td>carmen.jimenez@email.com</td>
+                            <td>+57 305 567-8901</td>
+                            <td>Cartagena</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(6)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(6)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>PP A1234567</td>
+                            <td>Roberto Antonio</td>
+                            <td>Díaz Mendoza</td>
+                            <td>roberto.diaz@email.com</td>
+                            <td>+57 306 890-1234</td>
+                            <td>Manizales</td>
+                            <td><span class="status-badge inactive">Inactiva</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(7)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(7)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>CC 44556677</td>
+                            <td>Patricia Lucía</td>
+                            <td>Torres Ramírez</td>
+                            <td>patricia.torres@email.com</td>
+                            <td>+57 307 123-4567</td>
+                            <td>Pereira</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(8)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(8)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>CC 33445566</td>
+                            <td>Jorge Enrique</td>
+                            <td>Moreno Silva</td>
+                            <td>jorge.moreno@email.com</td>
+                            <td>+57 308 456-7890</td>
+                            <td>Cúcuta</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(9)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(9)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>CC 66778899</td>
+                            <td>Claudia Esperanza</td>
+                            <td>Ruiz Aguilar</td>
+                            <td>claudia.ruiz@email.com</td>
+                            <td>+57 309 789-0123</td>
+                            <td>Villavicencio</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPerson(10)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(10)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="table-pagination">
+                <span class="pagination-info">Mostrando 1-10 de 10 registros</span>
+                <div class="pagination-controls">
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="pagination-current">1</span>
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../logic/modules/person.js"></script>
+</body>
+</html>

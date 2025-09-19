@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métodos de Pago - PanyPan</title>
+    <link rel="stylesheet" href="../../asset/css/main.css">
+    <link rel="stylesheet" href="../../asset/css/dashboard.css">
+    <link rel="stylesheet" href="../../asset/css/forms.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="module-container">
+        <div class="module-header">
+            <h1><i class="fas fa-credit-card"></i> Gestión de Métodos de Pago</h1>
+            <p>Administra los métodos de pago disponibles en el sistema</p>
+        </div>
+
+        <div class="form-container">
+            <form id="paymentMethodForm" class="entity-form">
+                <input type="hidden" id="paymentMethodId" name="id" value="">
+
+                <div class="form-grid">
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-tag"></i> Información Básica</legend>
+                        
+                        <div class="form-group">
+                            <label for="name" class="required">
+                                <i class="fas fa-credit-card"></i>
+                                Nombre
+                            </label>
+                            <input type="text" id="name" name="name" required 
+                                   placeholder="Efectivo" maxlength="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">
+                                <i class="fas fa-align-left"></i>
+                                Descripción
+                            </label>
+                            <textarea id="description" name="description" rows="3" 
+                                      placeholder="Descripción del método de pago" maxlength="200"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-toggle-on"></i> Estado</legend>
+                        
+                        <div class="form-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="isActive" name="is_active" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Método Activo</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="cancelForm()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> Lista de Métodos de Pago</h2>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar..." id="searchInput">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="newPaymentMethod()">
+                        <i class="fas fa-plus"></i>
+                        Nuevo
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="paymentMethodsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Efectivo</td>
+                            <td>Pago en efectivo</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPaymentMethod(1)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(1)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Tarjeta de Crédito</td>
+                            <td>Pago con tarjeta de crédito</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPaymentMethod(2)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(2)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Transferencia</td>
+                            <td>Transferencia bancaria</td>
+                            <td><span class="status-badge active">Activo</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadPaymentMethod(3)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(3)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../logic/modules/payment-method.js"></script>
+</body>
+</html>

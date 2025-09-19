@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Compañías - PanyPan</title>
+    <link rel="stylesheet" href="../../asset/css/main.css">
+    <link rel="stylesheet" href="../../asset/css/dashboard.css">
+    <link rel="stylesheet" href="../../asset/css/forms.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="module-container">
+        <!-- Título del formulario -->
+        <div class="module-header">
+            <h1><i class="fas fa-building"></i> Gestión de Compañías</h1>
+            <p>Administra la información de las empresas en el sistema</p>
+        </div>
+
+        <!-- Formulario de captura -->
+        <div class="form-container">
+            <form id="companyForm" class="entity-form">
+                <!-- ID oculto (PK) -->
+                <input type="hidden" id="companyId" name="id" value="">
+
+                <div class="form-grid">
+                    <!-- Información Legal -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-file-contract"></i> Información Legal</legend>
+                        
+                        <div class="form-group">
+                            <label for="legalName" class="required">
+                                <i class="fas fa-building"></i>
+                                Razón Social
+                            </label>
+                            <input type="text" id="legalName" name="legal_name" required 
+                                   placeholder="Ingresa la razón social completa" maxlength="150">
+                            <small class="field-hint">Nombre oficial registrado de la empresa</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tradeName">
+                                <i class="fas fa-store"></i>
+                                Nombre Comercial
+                            </label>
+                            <input type="text" id="tradeName" name="trade_name" 
+                                   placeholder="Nombre comercial o marca" maxlength="150">
+                            <small class="field-hint">Nombre con el que se conoce comercialmente</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taxId" class="required">
+                                <i class="fas fa-hashtag"></i>
+                                NIT/RUT
+                            </label>
+                            <input type="text" id="taxId" name="tax_id" required 
+                                   placeholder="123456789-0" maxlength="32" pattern="[0-9]+-[0-9]">
+                            <small class="field-hint">Número de identificación tributaria</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información de Contacto -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-address-card"></i> Información de Contacto</legend>
+                        
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Correo Electrónico
+                            </label>
+                            <input type="email" id="email" name="email" 
+                                   placeholder="empresa@ejemplo.com" maxlength="120">
+                            <small class="field-hint">Correo principal de la empresa</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">
+                                <i class="fas fa-phone"></i>
+                                Teléfono
+                            </label>
+                            <input type="tel" id="phone" name="phone" 
+                                   placeholder="+57 1 234-5678" maxlength="40">
+                            <small class="field-hint">Número de teléfono principal</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- Información de Ubicación -->
+                    <fieldset class="form-section full-width">
+                        <legend><i class="fas fa-map-marker-alt"></i> Información de Ubicación</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="address">
+                                    <i class="fas fa-road"></i>
+                                    Dirección
+                                </label>
+                                <input type="text" id="address" name="address" 
+                                       placeholder="Calle 123 #45-67" maxlength="200">
+                                <small class="field-hint">Dirección completa de la empresa</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="city">
+                                    <i class="fas fa-city"></i>
+                                    Ciudad
+                                </label>
+                                <input type="text" id="city" name="city" 
+                                       placeholder="Bogotá" maxlength="100">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state">
+                                    <i class="fas fa-map"></i>
+                                    Departamento/Estado
+                                </label>
+                                <input type="text" id="state" name="state" 
+                                       placeholder="Cundinamarca" maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country">
+                                    <i class="fas fa-flag"></i>
+                                    País
+                                </label>
+                                <input type="text" id="country" name="country" 
+                                       placeholder="Colombia" maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postalCode">
+                                    <i class="fas fa-mail-bulk"></i>
+                                    Código Postal
+                                </label>
+                                <input type="text" id="postalCode" name="postal_code" 
+                                       placeholder="110111" maxlength="20">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Estado -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-toggle-on"></i> Estado</legend>
+                        
+                        <div class="form-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="isActive" name="is_active" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Empresa Activa</span>
+                            </label>
+                            <small class="field-hint">Define si la empresa está activa en el sistema</small>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Compañía
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="editCompany()">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteCompany()">
+                        <i class="fas fa-trash"></i>
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="cancelForm()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- DataTable -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> Lista de Compañías</h2>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar compañías..." id="searchInput">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="newCompany()">
+                        <i class="fas fa-plus"></i>
+                        Nueva Compañía
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="companiesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Razón Social</th>
+                            <th>Nombre Comercial</th>
+                            <th>NIT/RUT</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Registros sintéticos de ejemplo -->
+                        <tr>
+                            <td>1</td>
+                            <td>Panadería PanyPan S.A.S</td>
+                            <td>PanyPan</td>
+                            <td>900123456-7</td>
+                            <td>info@panypan.com</td>
+                            <td>+57 1 234-5678</td>
+                            <td>Bogotá</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(1)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(1)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Distribuidora de Harinas del Centro S.A.</td>
+                            <td>Harinas Centro</td>
+                            <td>800987654-3</td>
+                            <td>ventas@harinascentro.co</td>
+                            <td>+57 1 987-6543</td>
+                            <td>Medellín</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(2)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(2)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Ingredientes Premium Ltda.</td>
+                            <td>Premium Ingredientes</td>
+                            <td>700456789-1</td>
+                            <td>contacto@ingredientespremium.com</td>
+                            <td>+57 2 345-6789</td>
+                            <td>Cali</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(3)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(3)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Empaque y Logística de Alimentos S.A.S</td>
+                            <td>EmpaqLogistica</td>
+                            <td>600234567-8</td>
+                            <td>info@empaqlogistica.com</td>
+                            <td>+57 4 567-8901</td>
+                            <td>Barranquilla</td>
+                            <td><span class="status-badge inactive">Inactiva</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(4)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(4)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Tecnología Panadera Innovación S.A.</td>
+                            <td>TecnoPan</td>
+                            <td>500345678-9</td>
+                            <td>innovacion@tecnopan.co</td>
+                            <td>+57 1 456-7890</td>
+                            <td>Bogotá</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(5)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(5)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Comercializadora de Productos de Panadería Ltda.</td>
+                            <td>Comercial Pan</td>
+                            <td>400567890-2</td>
+                            <td>gerencia@comercialpan.com</td>
+                            <td>+57 5 678-9012</td>
+                            <td>Cartagena</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(6)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(6)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Servicios Gastronómicos Integrales S.A.S</td>
+                            <td>Gastro Integrales</td>
+                            <td>300789012-3</td>
+                            <td>servicios@gastrointegrales.co</td>
+                            <td>+57 7 890-1234</td>
+                            <td>Bucaramanga</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(7)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(7)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Maquinaria y Equipos para Panadería S.A.</td>
+                            <td>MaquiPan</td>
+                            <td>200901234-5</td>
+                            <td>ventas@maquipan.com</td>
+                            <td>+57 3 012-3456</td>
+                            <td>Manizales</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(8)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(8)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Consultoría en Alimentos y Bebidas Ltda.</td>
+                            <td>ConsulAlimentos</td>
+                            <td>100123456-7</td>
+                            <td>consultoria@consulalimentos.co</td>
+                            <td>+57 6 234-5678</td>
+                            <td>Pereira</td>
+                            <td><span class="status-badge inactive">Inactiva</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(9)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(9)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Cadena de Suministros Alimentarios S.A.S</td>
+                            <td>CadenaSupply</td>
+                            <td>050345678-9</td>
+                            <td>operaciones@cadenasupply.com</td>
+                            <td>+57 8 345-6789</td>
+                            <td>Villavicencio</td>
+                            <td><span class="status-badge active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action edit" onclick="loadCompany(10)" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action delete" onclick="confirmDelete(10)" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="table-pagination">
+                <span class="pagination-info">Mostrando 1-10 de 10 registros</span>
+                <div class="pagination-controls">
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="pagination-current">1</span>
+                    <button class="btn-pagination" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../logic/modules/company.js"></script>
+</body>
+</html>

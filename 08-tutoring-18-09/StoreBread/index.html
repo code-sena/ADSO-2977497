@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PanyPan - La Mejor Panadería de Bogotá</title>
+    <link rel="stylesheet" href="asset/css/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1><i class="fas fa-bread-slice"></i> PanyPan</h1>
+                <p>La mejor panadería de Bogotá</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sección Izquierda - Carrusel -->
+            <section class="left-section">
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="carousel-slide active">
+                            <div class="slide-content">
+                                <i class="fas fa-bread-slice slide-icon"></i>
+                                <h3>Panes Artesanales</h3>
+                                <p>Elaborados con ingredientes frescos y técnicas tradicionales</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <i class="fas fa-birthday-cake slide-icon"></i>
+                                <h3>Postres Únicos</h3>
+                                <p>Delicias dulces que endulzan tu día con sabores excepcionales</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <i class="fas fa-cake slide-icon"></i>
+                                <h3>Tortas Especiales</h3>
+                                <p>Perfectas para celebraciones, hechas con amor y dedicación</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <i class="fas fa-coffee slide-icon"></i>
+                                <h3>Bebidas Premium</h3>
+                                <p>Café de especialidad y bebidas que complementan tu experiencia</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navegación del carrusel -->
+                    <div class="carousel-nav">
+                        <button class="nav-btn prev" onclick="changeSlide(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="nav-btn next" onclick="changeSlide(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Indicadores -->
+                    <div class="carousel-indicators">
+                        <span class="indicator active" onclick="currentSlide(1)"></span>
+                        <span class="indicator" onclick="currentSlide(2)"></span>
+                        <span class="indicator" onclick="currentSlide(3)"></span>
+                        <span class="indicator" onclick="currentSlide(4)"></span>
+                    </div>
+                </div>
+
+                <!-- Texto Inspirador -->
+                <div class="intro-text">
+                    <h2>Bienvenido a PanyPan</h2>
+                    <p class="highlight">La mejor panadería de Bogotá</p>
+                    <p>En PanyPan, cada producto es una obra maestra elaborada con ingredientes frescos y técnicas artesanales tradicionales. Nuestra pasión por la panadería se refleja en cada pan, cada postre y cada sonrisa que compartimos contigo.</p>
+                    <p><strong>Tradición, calidad y sabor auténtico</strong> que han conquistado el corazón de Bogotá. Te invitamos a vivir una experiencia única donde cada bocado cuenta una historia de dedicación y amor por lo que hacemos.</p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn primary">
+                            <i class="fas fa-store"></i>
+                            Visita Nuestra Tienda
+                        </button>
+                        <button class="cta-btn secondary">
+                            <i class="fas fa-phone"></i>
+                            Contactanos
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Central - Promociones -->
+            <section class="center-section">
+                <div class="promotions-container">
+                    <h2><i class="fas fa-tags"></i> Promociones Especiales</h2>
+                    
+                    <div class="promotion-carousel">
+                        <div class="promotion-slide active">
+                            <div class="promotion-card">
+                                <div class="promo-icon">
+                                    <i class="fas fa-percentage"></i>
+                                </div>
+                                <h3>2x1 en Croissants</h3>
+                                <p>Todos los miércoles disfruta de nuestros deliciosos croissants con esta increíble promoción</p>
+                                <span class="promo-tag">¡Miércoles!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="promotion-slide">
+                            <div class="promotion-card">
+                                <div class="promo-icon">
+                                    <i class="fas fa-birthday-cake"></i>
+                                </div>
+                                <h3>20% OFF en Tortas</h3>
+                                <p>Viernes de tortas con descuento especial. Perfectas para tus celebraciones del fin de semana</p>
+                                <span class="promo-tag">¡Viernes!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="promotion-slide">
+                            <div class="promotion-card">
+                                <div class="promo-icon">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <h3>Combo Café + Pan</h3>
+                                <p>La combinación perfecta para empezar tu día. Café premium con pan recién horneado</p>
+                                <span class="promo-tag">¡Todo el día!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="promotion-slide">
+                            <div class="promotion-card">
+                                <div class="promo-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h3>Descuento Fidelidad</h3>
+                                <p>Clientes frecuentes obtienen 15% de descuento en su quinta compra del mes</p>
+                                <span class="promo-tag">¡Clientes VIP!</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-timer">
+                        <i class="fas fa-clock"></i>
+                        <span>Promociones válidas por tiempo limitado</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Derecha - Login -->
+            <section class="right-section">
+                <div class="login-container">
+                    <div class="login-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h2>Acceso de Usuarios</h2>
+                        <p>Ingresa a tu cuenta para acceder a servicios exclusivos</p>
+                    </div>
+
+                    <form class="login-form" id="loginForm">
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fas fa-user"></i>
+                                Usuario
+                            </label>
+                            <input type="text" id="username" name="username" required placeholder="Ingresa tu usuario">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <input type="password" id="password" name="password" required placeholder="Ingresa tu contraseña">
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox" id="rememberMe">
+                                <span class="checkmark"></span>
+                                Recordarme
+                            </label>
+                        </div>
+
+                        <button type="submit" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Iniciar Sesión
+                        </button>
+                    </form>
+
+                    <div class="login-options">
+                        <a href="#" class="option-link register">
+                            <i class="fas fa-user-plus"></i>
+                            Registrar nuevo usuario
+                        </a>
+                        <a href="#" class="option-link recover">
+                            <i class="fas fa-key"></i>
+                            Recuperar contraseña
+                        </a>
+                    </div>
+
+                    <div class="security-info">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Tu información está protegida con encriptación de alta seguridad</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 PanyPan - Todos los derechos reservados | La mejor panadería de Bogotá</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="logic/login.js"></script>
+    <script src="logic/main.js"></script>
+</body>
+</html>
